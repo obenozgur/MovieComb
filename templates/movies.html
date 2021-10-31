@@ -23,7 +23,7 @@
   {% for movie_key, movie in movies %}
   <tr>
     <td>
-      <a href="{{ url_for('home_page') }}">
+      <a href="{{ url_for('movie_page', movie_key=movie_key) }}">
         {{ movie.title }}
       </a>
     </td>

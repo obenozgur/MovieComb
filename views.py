@@ -14,4 +14,8 @@ def movies_page():
     movies = db.get_movies()
     return render_template("movies.html", movies=sorted(movies))
 
-    
+
+def movie_page(movie_key):
+    db = current_app.config["db"]
+    movie = db.get_movie(movie_key)
+    return render_template("movie.html", movie=movie)
