@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title">Movie List</h1>
+    </div>
+  </div>
+</section>
+
+{% if movies %}
+<table class="table is-striped is-fullwidth">
+  <tr>
+    <th>
+      Title
+    </th>
+    <th>
+      Year
+    </th>
+  </tr>
+  {% for movie_key, movie in movies %}
+  <tr>
+    <td>
+      <a href="{{ url_for('home_page') }}">
+        {{ movie.title }}
+      </a>
+    </td>
+    <td>
+      {% if movie.year %} {{ movie.year }} {% endif %}
+      {% if not movie.year %} Year Unknown {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

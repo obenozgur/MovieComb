@@ -10,4 +10,8 @@ def home_page():
 
 
 def movies_page():
-    return render_template("movies.html")
+    db = current_app.config["db"]
+    movies = db.get_movies()
+    return render_template("movies.html", movies=sorted(movies))
+
+    
