@@ -1,0 +1,4 @@
+# Week 1 1.11.2021
+- Basics of dynamic content generation added according to tutorial "https://web.itu.edu.tr/uyar/fad/"
+- Structes of dynamic content generation added
+- Some design related buttons and decisions are made related to our project domain.

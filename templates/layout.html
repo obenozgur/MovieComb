@@ -13,13 +13,30 @@
         <nav class="navbar" role="navigation" aria-label="main navigation">
 
             <div class="navbar-menu">
+                <div class="navbar-start">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-link" href="{{ url_for('home_page') }}">
+                                <strong>Home</strong>
+                            </a>
+                            <a class="button is-link" href="{{ url_for('movies_page') }}">
+                                <strong>Movies</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
                         <a class="button is-link" href="{{ url_for('home_page') }}">
-                            <strong>Home</strong>
+                            <strong>Users</strong>
                         </a>
-                        <a class="button is-link" href="{{ url_for('movies_page') }}">
-                            <strong>List Movies</strong>
+                        <a class="button is-link" href="{{ url_for('home_page') }}">
+                            <strong>Lists</strong>
+                        </a>
+                        <a class="button is-link" href="{{ url_for('home_page') }}">
+                            <strong>Login</strong>
                         </a>
                     </div>
                 </div>
@@ -36,7 +53,7 @@
         <div class="content has-text-centered">
             <small>&copy; 2021, Efraim Ölçer & Oben Özgür</small>
         </div>
-      </footer>
+    </footer>
 </body>
 
 </html>
