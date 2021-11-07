@@ -11,29 +11,40 @@
 </section>
 
 {% if movies %}
-<table class="table is-striped is-fullwidth">
-  <tr>
-    <th>
-      Title
-    </th>
-    <th>
-      Year
-    </th>
-  </tr>
-  {% for movie_key, movie in movies %}
-  <tr>
-    <td>
-      <a href="{{ url_for('movie_page', movie_key=movie_key) }}">
-        {{ movie.title }}
-      </a>
-    </td>
-    <td>
-      {% if movie.year %} {{ movie.year }} {% endif %}
-      {% if not movie.year %} Year Unknown {% endif %}
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+<form action="" method="post" name="movie_list">
+  <table class="table is-striped is-fullwidth">
+    <tr>
+      <th>
+        Title
+      </th>
+      <th>
+        Year
+      </th>
+    </tr>
+    {% for movie_key, movie in movies %}
+    <tr>
+      <td>
+        <label class="checkbox">
+          <input type="checkbox" name="movie_keys" value="{{ movie_key }}" />
+        </label>
+        <a href="{{ url_for('movie_page', movie_key=movie_key) }}">
+          {{ movie.title }}
+        </a>
+      </td>
+      <td>
+        {% if movie.year %} {{ movie.year }} {% endif %}
+        {% if not movie.year %} Year Unknown {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <div class="field is-grouped">
+    <div class="control">
+      <button class="button is-danger is-small">Delete</button>
+    </div>
+  </div>
+</form>
 {% endif %}
+
 
 {% endblock %}
