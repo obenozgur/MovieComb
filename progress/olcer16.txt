@@ -1,1 +1,12 @@
+# Week 1 | 01.11.2021
+- 'server.py' is created to design for server creation and modification applications.
+- 'settings.py' is created to manage initial values like debugging, port etc.
+- 'views.py' is created to manage different pages without modifying server.py.
+- 'home.html' is a page for the main page.
+- 'layout.html' is a layout page to design standard elements for all pages like navigation bar, footer, etc. Thanks to the dynamic page design being created on views.py & server.py, layout.html is connected to other pages via block structure.
+- 'movies.html' is a movie list page. There is no list yet because database integration is not applied.
+- 'mymovies.css' is a design CSS that includes BULMA Framework integration and some basic customizations.
 
+# Week 2 | 08.11.2021
+- "Movie_edit page" is added. With this page, defined movie can be modified at DB.
+- Movie_edit page can be opened with a button defined in movie page.

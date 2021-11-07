@@ -22,4 +22,8 @@
       </tr>
       {% endif %}
     </table>
+    
+    <a class="button is-info" href="{{ url_for('movie_edit_page', movie_key=movie_key) }}">
+      <strong>Edit Movie</strong>
+    </a>
 {% endblock %}

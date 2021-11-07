@@ -52,6 +52,35 @@ def movie_add_page():
         movie_key = db.add_movie(movie)
         return redirect(url_for("movie_page", movie_key=movie_key))
 
+def movie_edit_page(movie_key):
+    db = current_app.config["db"]
+    movie = db.get_movie(movie_key)
+
+    if request.method == "GET":
+        if request.method == "GET":
+            values = {"title": "", "year": ""}
+            return render_template(
+                "movie_edit.html",
+                values=values,
+                movie_key=movie_key,
+                movie=movie,
+            )
+    else:
+        valid = validate_movie_form(request.form)
+        if not valid:
+            return render_template(
+                "movie_edit.html",
+                min_year=1887,
+                max_year=datetime.now().year,
+                values=request.form,
+            )
+        title = request.form.data["title"]
+        year = request.form.data["year"]
+        movie = Movie(title, year=year)
+        db = current_app.config["db"]
+        db.update_movie(movie, movie_key)
+        return redirect(url_for("movie_page", movie_key=movie_key))
+
 def validate_movie_form(form):
     form.data = {}
     form.errors = {}
