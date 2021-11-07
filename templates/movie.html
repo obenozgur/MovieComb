@@ -2,28 +2,29 @@
 {% block title %}Movie{% endblock %}
 {% block content %}
 <section class="hero">
-    <div class="hero-body">
-      <div class="container has-text-centered">
-        <h1 class="title">Movie</h1>
-      </div>
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title">Movie</h1>
     </div>
-  </section>
-  
+  </div>
+</section>
 
-    <table class="table">
-      <tr>
-        <th>Title:</th>
-        <td>{{ movie.title }}</td>
-      </tr>
-      {% if movie.year %}
-      <tr>
-        <th>Year:</th>
-        <td>{{ movie.year }}</td>
-      </tr>
-      {% endif %}
-    </table>
-    
-    <a class="button is-info" href="{{ url_for('movie_edit_page', movie_key=movie_key) }}">
-      <strong>Edit Movie</strong>
-    </a>
+
+<table class="table">
+  <tr>
+    <th>Title:</th>
+    <td>{{ movie.title }}</td>
+  </tr>
+  {% if movie.year %}
+  <tr>
+    <th>Year:</th>
+    <td>{{ movie.year }}</td>
+  </tr>
+  {% endif %}
+</table>
+
+<a class="button is-info" href="{{ url_for('movie_edit_page', movie_key=movie_key) }}">
+  <strong>Edit Movie</strong>
+</a>
+
 {% endblock %}

@@ -1,10 +1,14 @@
 from datetime import datetime
 
-from flask import current_app, render_template, request, redirect, url_for
+from flask import current_app, render_template, request, redirect, url_for, flash, abort
+from flask_login.utils import login_required
 from movie import Movie
+from passlib.hash import pbkdf2_sha256 as hasher
+from user import get_user
+from forms import LoginForm
+from flask_login import login_user, logout_user, current_user
 
-def login_page():
-    return render_template("login.html")
+
 
 def home_page():
     today = datetime.today()
@@ -26,7 +30,7 @@ def movies_page():
 def movie_page(movie_key):
     db = current_app.config["db"]
     movie = db.get_movie(movie_key)
-    return render_template("movie.html", movie=movie)
+    return render_template("movie.html", movie=movie, movie_key = movie_key)
 
 def movie_add_page():
     if request.method == "GET":
@@ -104,3 +108,24 @@ def validate_movie_form(form):
             form.data["year"] = year
 
     return len(form.errors) == 0
+
+
+
+def login_page():
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.data["username"]
+        user = get_user(username)
+        if user is not None:
+            password = form.data["password"]
+            if hasher.verify(password, user.password):
+                flash("You have logged in.")
+                next_page = request.args.get("next", url_for("home_page"))
+                return redirect(next_page)
+        flash("Invalid credentials.")
+    return render_template("login.html", form=form)
+
+
+def logout_page():
+    flash("You have logged out.")
+    return redirect(url_for("home_page"))

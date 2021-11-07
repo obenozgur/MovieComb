@@ -10,21 +10,22 @@
 </head>
 
 <body class="is-dark">
+
     <header class="is-marginless">
         <nav class="navbar has-shadow is-dark is-marginless" role="navigation" aria-label="main navigation">
             <div class="navbar-menu">
                 <div class="navbar-start">
                     <div class="navbar-item">
-                            <a class="button is-info" href="{{ url_for('home_page') }}">
-                                <strong>Home</strong>
-                            </a>
+                        <a class="button is-info" href="{{ url_for('home_page') }}">
+                            <strong>Home</strong>
+                        </a>
                     </div>
-                    <div class = "navbar-item">
+                    <div class="navbar-item">
                         <a class="button is-info" href="{{ url_for('movies_page') }}">
                             <strong>Movies</strong>
                         </a>
                     </div>
-                    <div class = "navbar-item">
+                    <div class="navbar-item">
                         <a class="button is-info" href="{{ url_for('movie_add_page') }}">
                             <strong>Add Movie</strong>
                         </a>
@@ -33,18 +34,17 @@
             </div>
             <div class="navbar-end">
                 <div class="navbar-item">
-                        <a class="button is-info" href="{{ url_for('home_page') }}">
-                            <strong>Users</strong>
-                        </a>     
-                </div>
-                <div class = "navbar-item">
                     <a class="button is-info" href="{{ url_for('home_page') }}">
-                        <strong>Lists</strong>
+                        <strong>Users</strong>
                     </a>
                 </div>
+                <span class="navbar-item">
+                    <a class="button is-info" href="{{ url_for('movie_add_page') }}">Add movie</a>
+                </span>
+
                 <div class="navbar-item">
                     <a class="button is-info" href="{{ url_for('home_page') }}">
-                        <strong>Login</strong>
+                        <strong>Lists</strong>
                     </a>
                 </div>
             </div>
