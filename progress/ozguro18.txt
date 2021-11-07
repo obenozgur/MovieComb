@@ -2,3 +2,6 @@
 - Basics of dynamic content generation added according to tutorial "https://web.itu.edu.tr/uyar/fad/"
 - Structes of dynamic content generation added
 - Some design related buttons and decisions are made related to our project domain.
+# Week 2 8.11.2021
+- Basics of form reading and "GET" "POST" methods are implemented.
+- Design related changes are made according to our project for the upcoming weeks.
