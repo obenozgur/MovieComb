@@ -10,3 +10,10 @@
 # Week 2 | 08.11.2021
 - "Movie_edit page" is added. With this page, defined movie can be modified at DB.
 - Movie_edit page can be opened with a button defined in movie page.
+
+# Week 3 | 21.11.2021
+- Password storing is added to settings.py file.
+- 'user.py' page is created to manage user types, permissions and passwords.
+- Login page app and configurations for login/logout is added to server.py.
+- forms.py is created to manage the login form on login page.
+- Login page is designed on 'login.html'.
