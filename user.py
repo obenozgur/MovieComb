@@ -15,8 +15,7 @@ class User(UserMixin):
     @property
     def is_active(self):
         return self.active
-
-
+        
 def get_user(user_id):
     password = current_app.config["PASSWORDS"].get(user_id)
     user = User(user_id, password) if password else None
