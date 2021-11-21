@@ -21,6 +21,8 @@ def movies_page():
         movies = db.get_movies()
         return render_template("movies.html", movies=sorted(movies))
     else:
+        if not current_user.is_admin:
+            abort(401)
         form_movie_keys = request.form.getlist("movie_keys")
         for form_movie_key in form_movie_keys:
             db.delete_movie(int(form_movie_key))
@@ -32,7 +34,10 @@ def movie_page(movie_key):
     movie = db.get_movie(movie_key)
     return render_template("movie.html", movie=movie, movie_key = movie_key)
 
+@login_required
 def movie_add_page():
+    if not current_user.is_admin:
+        abort(401)
     if request.method == "GET":
         if request.method == "GET":
             values = {"title": "", "year": ""}
@@ -56,6 +61,7 @@ def movie_add_page():
         movie_key = db.add_movie(movie)
         return redirect(url_for("movie_page", movie_key=movie_key))
 
+@login_required
 def movie_edit_page(movie_key):
     db = current_app.config["db"]
     movie = db.get_movie(movie_key)
@@ -119,6 +125,7 @@ def login_page():
         if user is not None:
             password = form.data["password"]
             if hasher.verify(password, user.password):
+                login_user(user)
                 flash("You have logged in.")
                 next_page = request.args.get("next", url_for("home_page"))
                 return redirect(next_page)
@@ -127,5 +134,6 @@ def login_page():
 
 
 def logout_page():
+    logout_user()
     flash("You have logged out.")
     return redirect(url_for("home_page"))

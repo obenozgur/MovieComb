@@ -38,18 +38,36 @@
                         <strong>Users</strong>
                     </a>
                 </div>
+                {% if current_user.is_admin %}
                 <span class="navbar-item">
                     <a class="button is-info" href="{{ url_for('movie_add_page') }}">Add movie</a>
                 </span>
+                {% endif %}
 
                 <div class="navbar-item">
                     <a class="button is-info" href="{{ url_for('home_page') }}">
                         <strong>Lists</strong>
                     </a>
                 </div>
+                {% if not current_user.is_authenticated %}
+                <div class="navbar-item">
+                    <a class="button is-info" href="{{ url_for('login_page') }}"><strong>Log in</strong> </a>
+                </div>
+                {% else %}
+                <div class="navbar-item">
+                    <a class="button is-info" href="{{ url_for('movies_page') }}"><strong>Hi, {{ current_user.username }}</strong> </a>
+                </div>
+                
+                <div class="navbar-item">
+                    <a class="button is-info" href="{{ url_for('logout_page') }}"><strong>Log out</strong></a>
+                </div>
+                {% endif %}
             </div>
             </div>
         </nav>
+        {% for message in get_flashed_messages() %}
+        <div class="notification is-info">{{ message }}</div>
+        {% endfor %}
     </header>
 
     {% block content %}

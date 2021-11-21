@@ -24,9 +24,11 @@
     {% for movie_key, movie in movies %}
     <tr>
       <td>
+        {% if current_user.is_admin %}
         <label class="checkbox">
           <input type="checkbox" name="movie_keys" value="{{ movie_key }}" />
         </label>
+        {% endif %}
         <a href="{{ url_for('movie_page', movie_key=movie_key) }}">
           {{ movie.title }}
         </a>
@@ -38,12 +40,15 @@
     </tr>
     {% endfor %}
   </table>
+  {% if current_user.is_admin %}
   <div class="field is-grouped">
     <div class="control">
       <button class="button is-danger is-small">Delete</button>
     </div>
   </div>
+  {% endif %}
 </form>
 {% endif %}
+
 
 {% endblock %}

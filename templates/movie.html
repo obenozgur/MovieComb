@@ -23,8 +23,12 @@
   {% endif %}
 </table>
 
-<a class="button is-info" href="{{ url_for('movie_edit_page', movie_key=movie_key) }}">
-  <strong>Edit Movie</strong>
-</a>
-
+{% if current_user.is_authenticated %}
+    <div class="field is-grouped">
+      <div class="control">
+        <a class="button is-primary is-outlined is-small"
+           href="{{ request.path }}/edit">Edit</a>
+      </div>
+    </div>
+    {% endif %}
 {% endblock %}
