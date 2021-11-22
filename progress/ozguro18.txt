@@ -5,3 +5,7 @@
 # Week 2 8.11.2021
 - Basics of form reading and "GET" "POST" methods are implemented.
 - Design related changes are made according to our project for the upcoming weeks.
+# Week 4 22.11.2021
+- Configuartion of authenticated buttons and features are completed.
+- Edit button is only made accesible for regular users.
+- Login privileges setted up to deny entry for some pages.
