@@ -6,6 +6,10 @@
 - Basics of form reading and "GET" "POST" methods are implemented.
 - Design related changes are made according to our project for the upcoming weeks.
 # Week 4 22.11.2021
-- Configuartion of authenticated buttons and features are completed.
+- Configuration of authenticated buttons and features are completed.
 - Edit button is only made accesible for regular users.
 - Login privileges setted up to deny entry for some pages.
+# Week 5 29.11.2021
+- Database connection to Flask application is provided. Now data is persistent.
+- Our data table designs are performed accordingly but not pushed.
+- Current database with this commit is just for testing the features of our website.
