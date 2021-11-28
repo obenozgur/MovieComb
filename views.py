@@ -88,7 +88,7 @@ def movie_edit_page(movie_key):
         year = request.form.data["year"]
         movie = Movie(title, year=year)
         db = current_app.config["db"]
-        db.update_movie(movie, movie_key)
+        db.update_movie(movie_key, movie)
         return redirect(url_for("movie_page", movie_key=movie_key))
 
 def validate_movie_form(form):

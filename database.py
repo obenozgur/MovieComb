@@ -1,33 +1,50 @@
+import sqlite3 as dbapi2
+
 from movie import Movie
 
 
 class Database:
-    def __init__(self):
-        self.movies = {}
-        self._last_movie_key = 0
+    def __init__(self, dbfile):
+        self.dbfile = dbfile
 
     def add_movie(self, movie):
-        self._last_movie_key += 1
-        self.movies[self._last_movie_key] = movie
-        return self._last_movie_key
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "INSERT INTO MOVIE (TITLE, YR) VALUES (?, ?)"
+            cursor.execute(query, (movie.title, movie.year))
+            connection.commit()
+            movie_key = cursor.lastrowid
+        return movie_key
+
+    def update_movie(self, movie_key, movie):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "UPDATE MOVIE SET TITLE = ?, YR = ? WHERE (ID = ?)"
+            cursor.execute(query, (movie.title, movie.year, movie_key))
+            connection.commit()
 
     def delete_movie(self, movie_key):
-        if movie_key in self.movies:
-            del self.movies[movie_key]
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "DELETE FROM MOVIE WHERE (ID = ?)"
+            cursor.execute(query, (movie_key,))
+            connection.commit()
 
     def get_movie(self, movie_key):
-        movie = self.movies.get(movie_key)
-        if movie is None:
-            return None
-        movie_ = Movie(movie.title, year=movie.year)
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "SELECT TITLE, YR FROM MOVIE WHERE (ID = ?)"
+            cursor.execute(query, (movie_key,))
+            title, year = cursor.fetchone()
+        movie_ = Movie(title, year=year)
         return movie_
 
     def get_movies(self):
         movies = []
-        for movie_key, movie in self.movies.items():
-            movie_ = Movie(movie.title, year=movie.year)
-            movies.append((movie_key, movie_))
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "SELECT ID, TITLE, YR FROM MOVIE ORDER BY ID"
+            cursor.execute(query)
+            for movie_key, title, year in cursor:
+                movies.append((movie_key, Movie(title, year)))
         return movies
-
-    def update_movie(self, movie, movie_key):
-        self.movies[movie_key] = movie
