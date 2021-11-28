@@ -1,6 +1,7 @@
 import sqlite3 as dbapi2
 
 from movie import Movie
+from user import User
 
 
 class Database:
@@ -48,3 +49,30 @@ class Database:
             for movie_key, title, year in cursor:
                 movies.append((movie_key, Movie(title, year)))
         return movies
+
+    def get_user(self, user_id):
+        with dbapi2.connect(self.dbfile) as connection:
+            connection.row_factory = dbapi2.Row
+            cursor = connection.cursor()
+            query = "SELECT USERNAME, PASSWORD FROM USERS WHERE (USERNAME = ?)"
+            number_of_rows = cursor.execute(query, (user_id,))
+            
+            """if number_of_rows > 0:
+                print("YOK")"""
+            
+
+            row = cursor.fetchone()
+
+            if(row is None):
+                print("yok")
+                return User(None, None)
+            else:
+                username = row['username']
+                password = row['password']
+                print("Hey" + str(username) + " " + str(password))
+                user_ = User(username, password)
+                return user_
+            
+
+
+

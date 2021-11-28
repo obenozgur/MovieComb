@@ -13,3 +13,4 @@
 - Database connection to Flask application is provided. Now data is persistent.
 - Our data table designs are performed accordingly but not pushed.
 - Current database with this commit is just for testing the features of our website.
+- Login system is integrated into database. Users are now registered in database.

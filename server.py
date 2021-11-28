@@ -37,7 +37,7 @@ def create_app():
 
     current_directory = os.getcwd()
     print(current_directory)
-    db = Database(os.path.join(current_directory, "movies.sqlite"))
+    db = Database(os.path.join(current_directory, "database.sqlite"))
     app.config["db"] = db
    
     return app
