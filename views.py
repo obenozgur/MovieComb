@@ -144,7 +144,7 @@ def movies_new_page():
     if request.method == "GET":
         return render_template("movies_new.html")
     else:
-        print("\nHEYO\n")
+        print("\nRead Form:")
         title = request.form["title"]
         print(title)
         score = request.form["score"]

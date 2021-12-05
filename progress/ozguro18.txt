@@ -14,3 +14,7 @@
 - Our data table designs are performed accordingly but not pushed.
 - Current database with this commit is just for testing the features of our website.
 - Login system is integrated into database. Users are now registered in database.
+# Week 6 05.11.2021
+- Movie searchbar added to movie_new.html template.
+- Form reading of movie searchbar is done.
+- Required database connections are made and database is moved out of the repository.

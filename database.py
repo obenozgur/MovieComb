@@ -64,12 +64,12 @@ class Database:
             row = cursor.fetchone()
 
             if(row is None):
-                print("yok")
+                #print("yok")
                 return User(None, None)
             else:
                 username = row['username']
                 password = row['password']
-                print("Hey" + str(username) + " " + str(password))
+                #print("Hey" + str(username) + " " + str(password))
                 user_ = User(username, password)
                 return user_
             
