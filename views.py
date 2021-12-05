@@ -137,3 +137,21 @@ def logout_page():
     logout_user()
     flash("You have logged out.")
     return redirect(url_for("home_page"))
+
+
+def movies_new_page():
+    #db = current_app.config["db"]
+    if request.method == "GET":
+        return render_template("movies_new.html")
+    else:
+        print("\nHEYO\n")
+        title = request.form["title"]
+        print(title)
+        score = request.form["score"]
+        print(score)
+        lang = request.form["answer"]
+        print(lang)
+        genres = request.form.getlist("genres")
+        print(genres)
+
+        return redirect(url_for("movies_page"))

@@ -26,6 +26,7 @@ def create_app():
     app.add_url_rule("/movie/<int:movie_key>", view_func=views.movie_page)
     app.add_url_rule("/new-movie", view_func=views.movie_add_page, methods=["GET", "POST"])
     app.add_url_rule("/movie/<int:movie_key>/edit", view_func=views.movie_edit_page, methods=["GET", "POST"])
+    app.add_url_rule("/movies_new", view_func=views.movies_new_page, methods=["GET", "POST"])
 
     lm.init_app(app)
     lm.login_view = "login_page"
@@ -35,9 +36,14 @@ def create_app():
     db.add_movie(Movie("The Shining"))
     app.config["db"] = db"""
 
-    current_directory = os.getcwd()
+    """current_directory = os.getcwd()
     print(current_directory)
     db = Database(os.path.join(current_directory, "database.sqlite"))
+    app.config["db"] = db"""
+
+    home_dir = os.path.expanduser("~")
+    print(home_dir)
+    db = Database(os.path.join(home_dir, "database.sqlite"))
     app.config["db"] = db
    
     return app

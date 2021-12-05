@@ -1,0 +1,219 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<section class="hero">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <h1 class="title">Movies</h1>
+        </div>
+    </div>
+</section>
+
+
+<form action="" method="post" name="movie_search">
+
+    <!--
+        <div class="field">
+        <label for="title" class="label">Title</label>
+        <div class="control">
+          <input type="text" name="title" class="input" required="required"/>
+        </div>
+      </div>
+
+    <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary is-small">Save</button>
+        </div>
+      </div>
+
+    -->
+
+    <div class="columns">
+        <div class="column is-8 is-offset-2">
+            <div class="field has-addons">
+                <div class="control is-expanded">
+                    <input class="input" type="text" name="title" placeholder="Movie Title">
+                </div>
+                <button class="button is-info">
+                    Search
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="columns">
+        <div class="column is-3 is-offset-1">
+            <div class="select is-info">
+                <select name="score">
+                    <option value="0">Select Score</option>
+                    <option value="1">1+</option>
+                    <option value="2">2+</option>
+                    <option value="3">3+</option>
+                    <option value="4">4+</option>
+                    <option value="5">5+</option>
+                    <option value="6">6+</option>
+                    <option value="7">7+</option>
+                    <option value="8">8+</option>
+                    <option value="9">9+</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="column is-3 is-offset-1">
+            <div class="control">
+                <label class="radio block">
+                    <input type="radio" name="answer" value="en" checked>
+                    English
+                </label>
+                <label class="radio block">
+                    <input type="radio" name="answer" value="tr">
+                    Turkish
+                </label>
+                <label class="radio block">
+                    <input type="radio" name="answer" value="all">
+                    All
+                </label>
+            </div>
+        </div>
+
+
+        <div class="column is-4 is-offset-0">
+            <label class="checkbox">
+                <input type="checkbox" name = "genres" value ="Action">
+                Action  
+            </label>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Adventure">
+                Adventure
+            </label>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Animation">
+                Animation
+            </label>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Biography">
+                Biography
+            </label>
+
+            <br>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Comedy">
+                Comedy
+            </label>
+
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Crime">
+                Crime
+            </label>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Documentary">
+                Documentary
+            </label>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Drama">
+                Drama
+            </label>
+            
+            <br>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Family">
+                Family
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Fantasy">
+                Fantasy
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Film Noir">
+                Film Noir
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="History">
+                History
+            </label>
+
+            <br>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Horror">
+                Horror
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Music">
+                Music
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Musical">
+                Musical
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Mystery">
+                Mystery
+            </label>
+
+            <br>
+
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Adventure">
+                Romance
+            </label>
+            <label class="checkbox" name="genres" value="Adventure">
+                <input type="checkbox" name="genres" value="Adventure">
+                Sci-Fi
+            </label>
+            <label class="checkbox" name="genres" value="Adventure">
+                <input type="checkbox" name="genres" value="Adventure">
+                Short Film
+            </label>
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Adventure">
+                Sport
+            </label>
+
+            <br>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Adventure">
+                Superhero
+            </label>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Adventure">
+                Thriller
+            </label>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Adventure">
+                War
+            </label>
+
+            <label class="checkbox">
+                <input type="checkbox" name="genres" value="Adventure">
+                Western
+            </label>
+        </div>
+    </div>
+
+
+
+
+</form>
+
+
+
+
+
+
+{% endblock %}
