@@ -18,3 +18,7 @@
 - Movie searchbar added to movie_new.html template.
 - Form reading of movie searchbar is done.
 - Required database connections are made and database is moved out of the repository.
+#Week 7 12.11.2021
+- Database structure changed to PostgreSQL platform using Pgadmin.
+- All dataset tables are prepared and imported from CSV.
+- BLOB R/W and searchbar done.
