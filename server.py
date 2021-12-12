@@ -18,6 +18,7 @@ def load_user(user_id):
 def create_app():
     app = Flask(__name__)
     app.config.from_object("settings")
+      
 
     app.add_url_rule("/", view_func=views.home_page)
     app.add_url_rule("/login", view_func=views.login_page, methods=["GET", "POST"])
@@ -27,6 +28,7 @@ def create_app():
     app.add_url_rule("/new-movie", view_func=views.movie_add_page, methods=["GET", "POST"])
     app.add_url_rule("/movie/<int:movie_key>/edit", view_func=views.movie_edit_page, methods=["GET", "POST"])
     app.add_url_rule("/movies_new", view_func=views.movies_new_page, methods=["GET", "POST"])
+    app.add_url_rule("/upload", view_func=views.upload_page, methods=["GET", "POST"])
 
     lm.init_app(app)
     lm.login_view = "login_page"
@@ -41,9 +43,9 @@ def create_app():
     db = Database(os.path.join(current_directory, "database.sqlite"))
     app.config["db"] = db"""
 
-    home_dir = os.path.expanduser("~")
-    print(home_dir)
-    db = Database(os.path.join(home_dir, "database.sqlite"))
+
+    
+    db = Database("host='localhost' user='postgres' password='password' dbname='DBProject'")
     app.config["db"] = db
    
     return app

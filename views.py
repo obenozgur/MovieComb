@@ -1,12 +1,13 @@
 from datetime import datetime
-
 from flask import current_app, render_template, request, redirect, url_for, flash, abort
 from flask_login.utils import login_required
-from movie import Movie
+from movie import Movie, MovieNew
+from person import Person
 from passlib.hash import pbkdf2_sha256 as hasher
 from user import get_user
 from forms import LoginForm
 from flask_login import login_user, logout_user, current_user
+import os
 
 
 
@@ -140,7 +141,7 @@ def logout_page():
 
 
 def movies_new_page():
-    #db = current_app.config["db"]
+    db = current_app.config["db"]
     if request.method == "GET":
         return render_template("movies_new.html")
     else:
@@ -154,4 +155,40 @@ def movies_new_page():
         genres = request.form.getlist("genres")
         print(genres)
 
+        db.search_movie(title, score, lang, genres)
+
         return redirect(url_for("movies_page"))
+
+def upload_page():
+    if request.method == "GET":
+        print("hey")
+
+        db = current_app.config["db"]
+        db.write_blob(1, "ok.jpg", "jpg")
+        db.read_blob(1, "uploads/")
+        print("done")
+
+
+        return render_template("file_upload.html")
+    else:
+        uploaded_file = request.files['file']
+        extensions = ['.jpg', '.png', '.gif']
+        max_length = 1024*1024
+        path = 'uploads' 
+        """current_directory = os.getcwd()
+        print(current_directory)
+        db = Database(os.path.join(current_directory, "database.sqlite"))
+        app.config["db"] = db"""
+        if uploaded_file.filename != '':
+            filename = uploaded_file.filename
+            print(uploaded_file.size)
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in extensions:
+                abort(400)
+            print(uploaded_file.filename)
+            uploaded_file.save(os.path.join(path, uploaded_file.filename))
+        return redirect(url_for("upload_page"))
+
+
+
+
