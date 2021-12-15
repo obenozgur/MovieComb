@@ -143,7 +143,7 @@ def logout_page():
 def movies_new_page():
     db = current_app.config["db"]
     if request.method == "GET":
-        return render_template("movies_new.html")
+        return render_template("movies_search.html")
     else:
         print("\nRead Form:")
         title = request.form["title"]
@@ -155,9 +155,19 @@ def movies_new_page():
         genres = request.form.getlist("genres")
         print(genres)
 
-        db.search_movie(title, score, lang, genres)
+        movies = db.search_movie(title, score, lang, genres)
 
-        return redirect(url_for("movies_page"))
+        return render_template("search.html", movies=movies) 
+        #return redirect(url_for("search_movies_page",movies=movies))
+
+
+def search_movies_page(movies):
+    print("----")
+    print(len(movies))
+    return render_template("search.html", movies=movies) 
+
+
+
 
 def upload_page():
     if request.method == "GET":

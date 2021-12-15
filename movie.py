@@ -5,8 +5,8 @@ class Movie:
     
 
 class MovieNew:
-    def __init__(self, title, original_title, year, date_published, genre, 
-                duration, country, language, director, actors, description, avg_vote, votes):
+    def __init__(self, imdb_title_id, title, original_title, year, date_published, genre, duration, country, language, director, actors, description, avg_vote, votes):
+        self.imdb_title_id = imdb_title_id
         self.title = title
         self.original_title = original_title
         self.year = year
@@ -20,3 +20,12 @@ class MovieNew:
         self.description = description
         self.avg_vote = avg_vote
         self.votes = votes
+
+
+class MovieShort:
+    def __init__(self, imdb_title_id, title, original_title, year, director):
+        self.imdb_title_id = imdb_title_id
+        self.title = title
+        self.original_title = original_title
+        self.year = year
+        self.director = director

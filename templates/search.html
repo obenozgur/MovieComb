@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title has-text-info-dark">Movies</h1>
+    </div>
+  </div>
+</section>
+
+{% if movies %}
+
+{% for movie in movies %}
+<section class="section is-small">
+    <h1 class="title has-text-primary-dark">{{movie.original_title}}</h1>
+    <h2 class="subtitle has-text-success-dark"> {{movie.title}}</h2>
+    <h2 class="subtitle"> {{movie.year}}, directed by {{movie.director}} </h2>
+</section>
+
+<hr>
+{% endfor %}
+
+
+<!-- 
+<form action="" method="post" name="movie_list">
+  <table class="table is-striped is-fullwidth">
+    <tr>
+      <th>
+        Title
+      </th>
+      <th>
+        Original Title
+      </th>
+      <th>
+        Year
+      </th>
+      <th>
+        Director
+      </th>
+    </tr>
+    {% for movie in movies %}
+    <tr>
+      <td>
+          {{ movie.title }}
+      </td>
+      <td>
+        {{ movie.original_title }}
+      </td>
+      <td>
+        {{ movie.year }}
+      </td>
+      <td>
+        {{ movie.director }}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% if current_user.is_admin %}
+  <div class="field is-grouped">
+    <div class="control">
+      <button class="button is-danger is-small">Delete</button>
+    </div>
+  </div>
+  {% endif %}
+</form>
+
+
+-->
+
+{% endif %}
+
+
+{% endblock %}

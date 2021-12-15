@@ -9,24 +9,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 </head>
 
-<body class="is-dark">
+<body class=" is-marginless has-text-grey-dark">
 
     <header class="is-marginless">
-        <nav class="navbar has-shadow is-dark is-marginless" role="navigation" aria-label="main navigation">
+        <nav class="navbar has-shadow has-background-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-menu">
                 <div class="navbar-start">
                     <div class="navbar-item">
-                        <a class="button is-info" href="{{ url_for('home_page') }}">
+                        <a class="button is-primary is-light" href="{{ url_for('home_page') }}">
                             <strong>Home</strong>
                         </a>
                     </div>
                     <div class="navbar-item">
-                        <a class="button is-info" href="{{ url_for('movies_page') }}">
+                        <a class="button is-primary is-light" href="{{ url_for('movies_page') }}">
                             <strong>Movies</strong>
                         </a>
                     </div>
                     <div class="navbar-item">
-                        <a class="button is-info" href="{{ url_for('movie_add_page') }}">
+                        <a class="button is-primary is-light" href="{{ url_for('movie_add_page') }}">
                             <strong>Add Movie</strong>
                         </a>
                     </div>
@@ -34,32 +34,32 @@
             </div>
             <div class="navbar-end">
                 <div class="navbar-item">
-                    <a class="button is-info" href="{{ url_for('home_page') }}">
+                    <a class="button is-primary is-light" href="{{ url_for('home_page') }}">
                         <strong>Users</strong>
                     </a>
                 </div>
                 {% if current_user.is_admin %}
                 <span class="navbar-item">
-                    <a class="button is-info" href="{{ url_for('movie_add_page') }}">Add movie</a>
+                    <a class="button is-primary is-light" href="{{ url_for('movie_add_page') }}">Add movie</a>
                 </span>
                 {% endif %}
 
                 <div class="navbar-item">
-                    <a class="button is-info" href="{{ url_for('home_page') }}">
+                    <a class="button is-primary is-light" href="{{ url_for('home_page') }}">
                         <strong>Lists</strong>
                     </a>
                 </div>
                 {% if not current_user.is_authenticated %}
                 <div class="navbar-item">
-                    <a class="button is-info" href="{{ url_for('login_page') }}"><strong>Log in</strong> </a>
+                    <a class="button is-primary is-light" href="{{ url_for('login_page') }}"><strong>Log in</strong> </a>
                 </div>
                 {% else %}
                 <div class="navbar-item">
-                    <a class="button is-info" href="{{ url_for('movies_page') }}"><strong>Hi, {{ current_user.username }}</strong> </a>
+                    <a class="button is-primary is-light" href="{{ url_for('movies_page') }}"><strong>Hi, {{ current_user.username }}</strong> </a>
                 </div>
                 
                 <div class="navbar-item">
-                    <a class="button is-info" href="{{ url_for('logout_page') }}"><strong>Log out</strong></a>
+                    <a class="button is-primary is-light" href="{{ url_for('logout_page') }}"><strong>Log out</strong></a>
                 </div>
                 {% endif %}
             </div>
