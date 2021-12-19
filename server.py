@@ -28,6 +28,7 @@ def create_app():
     app.add_url_rule("/new-movie", view_func=views.movie_add_page, methods=["GET", "POST"])
     app.add_url_rule("/movie/<int:movie_key>/edit", view_func=views.movie_edit_page, methods=["GET", "POST"])
     app.add_url_rule("/movies_search", view_func=views.movies_new_page, methods=["GET", "POST"])
+    app.add_url_rule("/movie_new/<string:imdb_id>", view_func=views.movie_new)
     app.add_url_rule("/search", view_func=views.search_movies_page) 
     app.add_url_rule("/upload", view_func=views.upload_page, methods=["GET", "POST"])
 

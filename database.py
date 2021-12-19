@@ -41,6 +41,16 @@ class Database:
         movie_ = Movie(title, year=year)
         return movie_
 
+    def get_movie_new(self, imdb_id):
+        with dbapi2.connect(self.dbfile,cursor_factory=RealDictCursor) as connection:
+            cursor = connection.cursor()
+            query = "SELECT * FROM movies WHERE imdb_title_id = '{}'".format(imdb_id)
+            cursor.execute(query)
+            row = cursor.fetchone()
+            movie = MovieNew(row["imdb_title_id"], row["original_title"], row["year"], row["date_published"], row["genre"], row["duration"], row["country"], row["language"], row["director"], row["actors"], row["description"], row["avg_vote"], row["votes"])
+            return movie
+
+
     def get_movies(self):
         movies = []
         with dbapi2.connect(self.dbfile) as connection:
@@ -172,7 +182,7 @@ class Database:
         with dbapi2.connect(self.dbfile,cursor_factory=RealDictCursor) as connection:
             cursor = connection.cursor()
 
-            query = "SELECT imdb_title_id, title, original_title, year, director FROM movies WHERE avg_vote >= {}".format(score)
+            query = "SELECT imdb_title_id, original_title, year, director FROM movies WHERE avg_vote >= {}".format(score)
 
             if language == "en":
                 query = query + " AND language LIKE '%English%'"
@@ -196,7 +206,6 @@ class Database:
 
             moviedict = {
                 "imdb_title_id": "Unknown",
-                "title": "Unknown",
                 "original_title": "Unknown",
                 "year": "Unknown",
                 "director": "Unknown"
@@ -218,7 +227,7 @@ class Database:
                         moviedict[str(column)] = row[str(column)]
                         #print(moviedict[str(column)])
 
-                movie = MovieShort(moviedict["imdb_title_id"],moviedict["title"],moviedict["original_title"],moviedict["year"],moviedict["director"])
+                movie = MovieShort(moviedict["imdb_title_id"],moviedict["original_title"],moviedict["year"],moviedict["director"])
                 movies.append(movie)
 
                 for key in moviedict:

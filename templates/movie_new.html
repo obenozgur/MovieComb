@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}Movie{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title has-text-info-dark">{{movie.original_title}}</h1>
+      </div>
+    </div>
+  </section>
+
+
+<section class="section is-small">
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Year</b>:</span> {{movie.year}}</h2>
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Date</b>:</span> {{movie.date_published}}</h2>
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Genre</b>:</span> {{movie.genre}}</h2>
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Duration</b>:</span> {{movie.duration}} minutes</h2>
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Country</b>:</span> {{movie.country}}</h2>
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Languages</b>:</span> {{movie.language}}</h2>
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Director</b>:</span> {{movie.director}}</h2>
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Actors</b>:</span> {{movie.actors}}</h2>
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Description</b>:</span>{{movie.description}}</h2>
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Average Vote</b>:</span> {{movie.avg_vote}}</h2>
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Votes</b>:</span> {{movie.votes}}</h2>
+</section>
+
+{% if current_user.is_authenticated %}
+    <div class="field is-grouped">
+      <div class="control">
+        <a class="button is-primary is-outlined is-small"
+           href="{{ request.path }}/edit">Edit</a>
+      </div>
+    </div>
+    {% endif %}
+{% endblock %}

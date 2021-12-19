@@ -35,6 +35,11 @@ def movie_page(movie_key):
     movie = db.get_movie(movie_key)
     return render_template("movie.html", movie=movie, movie_key = movie_key)
 
+def movie_new(imdb_id):
+    db = current_app.config["db"]
+    movie = db.get_movie_new(imdb_id)
+    return render_template("movie_new.html", movie=movie, imdb_id=imdb_id)
+
 @login_required
 def movie_add_page():
     if not current_user.is_admin:
