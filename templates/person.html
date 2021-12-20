@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Movie{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title has-text-info-dark">{{person.name}}</h1>
+      </div>
+    </div>
+  </section>
+
+
+<section class="section is-small">
+    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Birth Name</b>:</span> {{person.birth_name}}</h2>
+    {% if person.height %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Height</b>:</span> {{person.height}} cm</h2> {% endif %}
+    {% if person.date_of_birth %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Date of Birth</b>:</span> {{person.date_of_birth}} minutes</h2>{% endif %}
+    {% if person.place_of_birth %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Place of Birth</b>:</span> {{person.place_of_birth}}</h2>{% endif %}
+    {% if person.date_of_death %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Date of Death</b>:</span> {{person.date_of_birth}}</h2>{% endif %}
+    {% if person.place_of_death %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Place of Death</b>:</span> {{person.place_of_death}}</h2>{% endif %}
+    {% if person.bio %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Bio</b>:</span> {{person.bio}}</h2>{% endif %}
+</section>
+
+{% if current_user.is_authenticated %}
+    <div class="field is-grouped">
+      <div class="control">
+        <a class="button is-primary is-outlined is-small"
+           href="{{ request.path }}/edit">Edit</a>
+      </div>
+    </div>
+    {% endif %}
+{% endblock %}

@@ -2,6 +2,7 @@ import psycopg2 as dbapi2
 from psycopg2.extras import RealDictCursor
 
 from movie import Movie, MovieNew, MovieShort
+from person import Person, PersonShort
 from user import User
 
 
@@ -49,6 +50,62 @@ class Database:
             row = cursor.fetchone()
             movie = MovieNew(row["imdb_title_id"], row["original_title"], row["year"], row["date_published"], row["genre"], row["duration"], row["country"], row["language"], row["director"], row["actors"], row["description"], row["avg_vote"], row["votes"])
             return movie
+
+    def get_persons(self, imdb_id):
+        with dbapi2.connect(self.dbfile,cursor_factory=RealDictCursor) as connection:
+            cursor = connection.cursor()
+
+            query = """select names.imdb_name_id, name, category, characters from 
+	                    movies join title_principals on movies.imdb_title_id = title_principals.imdb_title_id 
+	                    join names on title_principals.imdb_name_id = names.imdb_name_id
+	                    where movies.imdb_title_id = '{}'
+	                    order by ordering""".format(imdb_id)
+
+            cursor.execute(query)
+            rows = cursor.fetchall()
+
+            #print(len(rows))
+
+            personshorts = []
+
+            moviedict = {
+                "imdb_name_id": "",
+                "name": "",
+                "category": "",
+                "characters": ""
+                }
+
+            #for i in rows:
+                #print(i["original_title"])
+
+            for row in rows:
+                for column in row:
+                    if(not row[str(column)] is None):
+                        moviedict[str(column)] = row[str(column)]
+                        #print(moviedict[str(column)])
+
+                person = PersonShort(moviedict["imdb_name_id"],moviedict["name"],moviedict["category"],moviedict["characters"])
+                personshorts.append(person)
+
+                for key in moviedict:
+                    moviedict[key] = ""
+
+            #print(len(personshorts))
+
+            
+        return personshorts
+
+    def get_person(self, imdb_name_id):
+        with dbapi2.connect(self.dbfile,cursor_factory=RealDictCursor) as connection:
+            cursor = connection.cursor()
+            query = "SELECT * FROM names WHERE imdb_name_id = '{}'".format(imdb_name_id)
+            cursor.execute(query)
+            row = cursor.fetchone()
+            person = Person(row["imdb_name_id"], row["name"], row["birth_name"], row["height"], row["bio"], row["date_of_birth"], row["place_of_birth"], row["date_of_death"], row["place_of_death"])
+            return person
+        
+
+
 
 
     def get_movies(self):

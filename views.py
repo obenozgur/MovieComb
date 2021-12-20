@@ -40,6 +40,17 @@ def movie_new(imdb_id):
     movie = db.get_movie_new(imdb_id)
     return render_template("movie_new.html", movie=movie, imdb_id=imdb_id)
 
+def casting_page(imdb_id):
+    db = current_app.config["db"]
+    persons = db.get_persons(imdb_id)
+    movie = db.get_movie_new(imdb_id)
+    return render_template("casting_page.html", imdb_id = imdb_id, movie_name = movie.original_title, persons = persons)
+
+def person_page(imdb_name_id):
+    db = current_app.config["db"]
+    person = db.get_person(imdb_name_id)
+    return render_template("person.html", person = person)
+
 @login_required
 def movie_add_page():
     if not current_user.is_admin:

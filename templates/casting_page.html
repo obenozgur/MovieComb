@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %}Movie{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title has-text-info-dark">{{movie_name}} Casting</h1>
+      </div>
+    </div>
+  </section>
+
+
+  <!--
+
+  
+  {% for person in persons %}
+  <section class="section is-small">
+   <h2 class="subtitle has-text-primary-dark">{{person.name}} {{person.character}} as {{person.category}}</h1>
+
+    
+  </section>
+  
+  <hr>
+  {% endfor %}
+
+  -->
+<div class="content">
+  <ul>
+      {% for person in persons %}
+      <li>
+        <h2 class="subtitle has-text-primary-dark"> <a href="{{ url_for('person_page', imdb_name_id = person.imdb_name_id) }}" class="is has-text-primary-dark"> <b>{{person.name}}</b> </a> {{person.character}} as {{person.category}}</h1>
+      </li>
+      {% endfor %}
+  </ul>
+</div>
+
+
+
+{% if current_user.is_authenticated %}
+    <div class="field is-grouped">
+      <div class="control">
+        <a class="button is-primary is-outlined is-small"
+           href="{{ request.path }}/edit">Edit</a>
+      </div>
+    </div>
+    {% endif %}
+{% endblock %}
