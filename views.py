@@ -30,10 +30,6 @@ def home_page():
         print(genres)
 
         movies = db.search_movie(title, score, lang, genres)
-
-
-        
-
         return render_template("search.html", movies=movies) 
 
 def profile_page():
@@ -48,6 +44,15 @@ def profile_page():
         full_filename = os.path.join('static', 'empty.png')
 
     return render_template("profile.html", user=user, image=full_filename)
+
+def delete_profile_page():
+    db = current_app.config["db"]
+    username = current_user.username
+    logout_user()
+    db.delete_user(username)
+
+    return redirect(url_for("home_page"))
+
 
 
 def users_page():

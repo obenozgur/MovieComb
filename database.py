@@ -158,7 +158,11 @@ class Database:
             query = "INSERT INTO users (username,password) VALUES ('{}','{}')".format(username, password)
             cursor.execute(query)
 
-                
+    def delete_user(self, username):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "DELETE FROM users WHERE username = '{}'".format(username)
+            cursor.execute(query)
 
 
     def read_pp(self, username, path_to_dir):
