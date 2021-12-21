@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title has-text-info-dark">Users</h1>
+    </div>
+  </div>
+</section>
+
+{% if contents %}
+
+{% for content in contents %}
+<!--
+<section class="section is-small">
+  <h1 class="title has-text-primary-dark">{{content[0].username}}</h1>
+  <img class="is-rounded" src="{{ content[1] }}" alt="Profile Picture">
+</section>
+-->
+
+<div class="columns is-gapless is-centered">
+<div class="column is-8 is-offset-3">
+
+<section class="section is-small">
+<div class="card is-small has-background-success-light">
+  <div class="card-image">
+    <figure class="image is-128x128">
+      <img class="is-rounded" src="{{ content[1] }}" alt="Placeholder image">
+    </figure>
+  </div>
+  <div class="card-content">
+    <div class="media">
+      <div class="media-left">
+      </div>
+      <div class="media-content">
+        <p class="title is-4">{{content[0].username}}</p>
+      </div>
+    </div>
+
+    <div class="content">
+      {{content[0].bio}}
+      <br>
+    </div>
+  </div>
+</div>
+</section>
+
+
+
+
+</div>
+</div>
+{% endfor %}
+
+{% endif %}
+
+
+{% endblock %}

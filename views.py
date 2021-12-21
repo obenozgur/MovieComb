@@ -4,17 +4,73 @@ from flask_login.utils import login_required
 from movie import Movie, MovieNew
 from person import Person
 from passlib.hash import pbkdf2_sha256 as hasher
-from user import get_user
-from forms import LoginForm
+from user import get_user, User
+from forms import LoginForm, SignupForm
 from flask_login import login_user, logout_user, current_user
 import os
 
 
 
 def home_page():
-    today = datetime.today()
+    """today = datetime.today()
     day_name = today.strftime("%A")
-    return render_template("home.html", day=day_name)
+    return render_template("home.html", day=day_name)"""
+    db = current_app.config["db"]
+    if request.method == "GET":
+        return render_template("movies_search.html")
+    else:
+        print("\nRead Form:")
+        title = request.form["title"]
+        print(title)
+        score = request.form["score"]
+        print(score)
+        lang = request.form["answer"]
+        print(lang)
+        genres = request.form.getlist("genres")
+        print(genres)
+
+        movies = db.search_movie(title, score, lang, genres)
+
+
+        
+
+        return render_template("search.html", movies=movies) 
+
+def profile_page():
+    db = current_app.config["db"]
+    username = current_user.username
+    user = db.get_user(username)
+
+    if not user.file_extension is None:
+        folder = os.path.join('static', 'pps')
+        full_filename = os.path.join(folder, str(username) + user.file_extension)
+    else:
+        full_filename = os.path.join('static', 'empty.png')
+
+    return render_template("profile.html", user=user, image=full_filename)
+
+
+def users_page():
+    db = current_app.config["db"]
+    users = db.get_all_users()
+    images  = []
+    contents = []
+
+    for user in users:
+        if not user.file_extension is None:
+            folder = os.path.join('static', 'pps')
+            full_filename = os.path.join(folder, str(user.username) + user.file_extension)
+        else:
+            full_filename = os.path.join('static', 'empty.png')
+        
+        images.append(full_filename)
+
+    for i in range(len(images)):
+        contents.append((users[i], images[i]))
+
+
+    return render_template("users.html", contents = contents)
+
 
 def movies_page():
     db = current_app.config["db"]
@@ -155,8 +211,28 @@ def logout_page():
     flash("You have logged out.")
     return redirect(url_for("home_page"))
 
+def signup_page():
+    form = SignupForm()
+    db = current_app.config["db"]
+    if form.validate_on_submit():
+        username = form.data["username"]
+        search_user = get_user(username)
+        if search_user is not None:
+            flash("Username taken.")
+        else:
+            password = form.data["password"]
+            if len(password) < 5:
+                flash("Password must be longer than 5 characters.")
+            else:
+                hashed_password = hasher.hash(password)
+                db.insert_user(username, hashed_password)
+                flash("You have signed up.")
+                next_page = request.args.get("next", url_for("home_page"))
+                return redirect(next_page)
+    return render_template("signup.html", form=form)
 
-def movies_new_page():
+
+"""def movies_new_page():
     db = current_app.config["db"]
     if request.method == "GET":
         return render_template("movies_search.html")
@@ -174,32 +250,33 @@ def movies_new_page():
         movies = db.search_movie(title, score, lang, genres)
 
         return render_template("search.html", movies=movies) 
-        #return redirect(url_for("search_movies_page",movies=movies))
+        #return redirect(url_for("search_movies_page",movies=movies))"""
 
 
 def search_movies_page(movies):
-    print("----")
-    print(len(movies))
+    #print("----")
+    #print(len(movies))
     return render_template("search.html", movies=movies) 
 
 
 
-
+@login_required
 def upload_page():
+    db = current_app.config["db"]
     if request.method == "GET":
-        print("hey")
+        #print("hey")
 
-        db = current_app.config["db"]
-        db.write_blob(1, "ok.jpg", "jpg")
-        db.read_blob(1, "uploads/")
-        print("done")
-
-
+        #db = current_app.config["db"]
+        #db.write_blob(1, "ok.jpg", "jpg")
+        #db.read_blob(1, "uploads/")
+        #db.write_pp("admin", "/uploads/empty.png")
+        #db.read_pp("admin", "uploads/")
+        #print("done")
         return render_template("file_upload.html")
     else:
         uploaded_file = request.files['file']
         extensions = ['.jpg', '.png', '.gif']
-        max_length = 1024*1024
+        #max_length = 1024*1024
         path = 'uploads' 
         """current_directory = os.getcwd()
         print(current_directory)
@@ -207,13 +284,17 @@ def upload_page():
         app.config["db"] = db"""
         if uploaded_file.filename != '':
             filename = uploaded_file.filename
-            print(uploaded_file.size)
+            #print(uploaded_file.size)
             file_ext = os.path.splitext(filename)[1]
             if file_ext not in extensions:
                 abort(400)
             print(uploaded_file.filename)
             uploaded_file.save(os.path.join(path, uploaded_file.filename))
-        return redirect(url_for("upload_page"))
+            username = current_user.username
+            db.write_pp(str(username), os.path.join(path, uploaded_file.filename), file_ext)
+        return redirect(url_for("profile_page"))
+
+
 
 
 

@@ -105,9 +105,6 @@ class Database:
             return person
         
 
-
-
-
     def get_movies(self):
         movies = []
         with dbapi2.connect(self.dbfile) as connection:
@@ -118,7 +115,71 @@ class Database:
                 movies.append((movie_key, Movie(title, year)))
         return movies
 
-    def get_user(self, user_id):
+    def get_user(self, username):
+        with dbapi2.connect(self.dbfile, cursor_factory=RealDictCursor) as connection:
+            cursor = connection.cursor()
+            query = "SELECT * FROM users WHERE username = '{}'".format(username)
+            cursor.execute(query)
+
+            row = cursor.fetchone()
+
+            if row is None:
+                return None
+            else:
+                username = row["username"]
+                password = row["password"]
+                bio = row["bio"]
+                file_extension = row["file_extension"]
+                if not row["pp"] is None:
+                    self.read_pp(username, "static/pps/")
+
+                user_ = User(username, password, bio, file_extension)
+                return user_
+
+    def get_all_users(self):
+        with dbapi2.connect(self.dbfile, cursor_factory=RealDictCursor) as connection:
+            cursor = connection.cursor()
+            query = "SELECT * FROM users"
+            cursor.execute(query)
+
+            rows = cursor.fetchall()
+
+            users = []
+
+            for row in rows:
+                user_ = (User(row["username"], row["password"], row["bio"], row["file_extension"]))
+                users.append(user_)
+
+            return users
+
+    def insert_user(self, username, password):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "INSERT INTO users (username,password) VALUES ('{}','{}')".format(username, password)
+            cursor.execute(query)
+
+                
+
+
+    def read_pp(self, username, path_to_dir):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "SELECT username,file_extension,pp FROM users WHERE username = '{}'".format(username)
+            cursor.execute(query)
+
+            blob = cursor.fetchone()
+            open(path_to_dir + str(blob[0]) + str(blob[1]), 'wb').write(blob[2])
+
+    def write_pp(self, username, path_to_file, file_extension):
+        with dbapi2.connect(self.dbfile) as connection:
+            image = open(path_to_file, 'rb').read()
+            cursor = connection.cursor()
+            query = "UPDATE users SET file_extension = '{}', pp = {} WHERE username = '{}'".format(file_extension, dbapi2.Binary(image), username) 
+            cursor.execute(query)
+                
+
+    
+    def get_userKK(self, user_id):
         with dbapi2.connect(self.dbfile,cursor_factory=RealDictCursor) as connection:
             cursor = connection.cursor()
             query = "SELECT USERNAME, PASSWORD FROM users WHERE USERNAME = '{}'".format(user_id)

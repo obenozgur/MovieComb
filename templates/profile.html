@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+      <section class="hero">
+        <div class="hero-body">
+          <div class="container is-pulled-left">
+            <h1 class="title has-text-info-dark">{{user.username}}'s profile</h1>
+          </div>
+        </div>
+      </section>
+    
+     
+
+
+    <section class="hero">
+        <div class="hero-body">
+        <div class="columns is-gapless">
+          <div class="column is-4"><figure class="image is-128x128">
+              <img class="is-rounded" src="{{ image }}" alt="Profile Picture">
+              <br>
+                  <a class="button is-link is-dark is-pulled-left" href="{{ url_for('upload_page') }}">
+                      <strong>Upload Picture</strong>
+                  </a>
+                  <br>
+                  <br>
+                  <a class="button is-link is-dark is-pulled-left" href="{{ url_for('upload_page') }}">
+                    <strong>Upload Picture</strong>
+                </a>
+          </div>
+          <div class="column is-8">
+              <h1 ><strong class="has-text-primary-dark">Bio</strong></h1>
+                {{user.bio}}  
+            </div>
+            
+      </div>
+      </section>
+{% endblock %}
