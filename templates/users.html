@@ -12,48 +12,44 @@
 
 {% if contents %}
 
+<div class="columns is-gapless is-multiline">
+
 {% for content in contents %}
-<!--
-<section class="section is-small">
-  <h1 class="title has-text-primary-dark">{{content[0].username}}</h1>
-  <img class="is-rounded" src="{{ content[1] }}" alt="Profile Picture">
-</section>
--->
-
-<div class="columns is-gapless is-centered">
-<div class="column is-8 is-offset-3">
+<div class="column is-4">
 
 <section class="section is-small">
+
 <div class="card is-small has-background-success-light">
   <div class="card-image">
-    <figure class="image is-128x128">
+    <figure class="image is-96x96">
       <img class="is-rounded" src="{{ content[1] }}" alt="Placeholder image">
     </figure>
   </div>
+  <br>
   <div class="card-content">
     <div class="media">
-      <div class="media-left">
-      </div>
       <div class="media-content">
         <p class="title is-4">{{content[0].username}}</p>
       </div>
     </div>
+  </div>
 
     <div class="content">
       {{content[0].bio}}
       <br>
     </div>
-  </div>
 </div>
+
 </section>
 
-
-
-
 </div>
-</div>
+
+
+
+
 {% endfor %}
 
+</div>
 {% endif %}
 
 

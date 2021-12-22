@@ -8,6 +8,7 @@ from user import get_user, User
 from forms import LoginForm, SignupForm
 from flask_login import login_user, logout_user, current_user
 import os
+import re
 
 
 
@@ -53,6 +54,36 @@ def delete_profile_page():
 
     return redirect(url_for("home_page"))
 
+@login_required
+def add_movie_new_page():
+    if not current_user.is_admin:
+        abort(401)
+    else:
+        if request.method == "GET":
+            values = {"title": "", "year": "", "avg_vote": ""}
+            return render_template(
+                "add_movie.html",
+                values=values,
+            )
+        else:
+            valid = validate_movie_form_new(request.form)
+            if not valid:
+                return render_template(
+                    "add_movie.html",
+                    min_year=1887,
+                    max_year=datetime.now().year,
+                    values=request.form,
+                    min_score = 0,
+                    max_score = 10
+                )
+            title = request.form.data["title"]
+            year = request.form.data["year"]
+            avg_vote = request.form.data["avg_vote"]
+            movie = MovieNew("", title, year, "", "", "", "", "", "Unknown", "", "", avg_vote, 0)
+            db = current_app.config["db"]
+            print(title,year,avg_vote)
+            imdb_title_id = db.add_movie_new(movie)
+            return redirect(url_for("movie_new", imdb_id = imdb_title_id))
 
 
 def users_page():
@@ -169,6 +200,37 @@ def movie_edit_page(movie_key):
         db.update_movie(movie_key, movie)
         return redirect(url_for("movie_page", movie_key=movie_key))
 
+@login_required
+def bio_page():
+    db = current_app.config["db"]
+    
+    if request.method == "GET":
+        values = {"bio": ""}
+        return render_template("bio.html", values = values)
+    else:
+        valid = validate_bio_form(request.form)
+        if not valid:
+            return render_template("bio.html", values = request.form)
+        
+        bio = request.form.data["bio"]
+        db.update_bio(current_user.username, bio)
+        return(redirect(url_for("profile_page")))
+
+def validate_bio_form(form):
+    form.data = {}
+    form.errors = {}
+
+    form_bio = form.get("bio")
+    print(len(form_bio))
+
+    if len(form_bio) > 240:
+        form.errors["bio"] = "Bio can not be longer than 240 characters."
+    else:
+        form.data["bio"] = form_bio
+
+    return len(form.errors) == 0
+
+
 def validate_movie_form(form):
     form.data = {}
     form.errors = {}
@@ -178,6 +240,46 @@ def validate_movie_form(form):
         form.errors["title"] = "Title can not be blank."
     else:
         form.data["title"] = form_title
+
+    form_year = form.get("year")
+    if not form_year:
+        form.data["year"] = None
+    elif not form_year.isdigit():
+        form.errors["year"] = "Year must consist of digits only."
+    else:
+        year = int(form_year)
+        if (year < 1887) or (year > datetime.now().year):
+            form.errors["year"] = "Year not in valid range."
+        else:
+            form.data["year"] = year
+
+    return len(form.errors) == 0
+
+
+
+def validate_movie_form_new(form):
+    form.data = {}
+    form.errors = {}
+
+    form_title = form.get("title", "").strip()
+    form_director = form.get("director", "").strip()
+    if len(form_title) == 0:
+        form.errors["title"] = "Title can not be blank."
+    else:
+        form.data["title"] = form_title
+    
+
+    form_avg_vote = form.get("avg_vote")
+    if not form_avg_vote:
+        form.data["avg_vote"] = 0
+    elif (not form_avg_vote.isdigit()) and (re.match(r'^-?\d+(?:\.\d+)$', str(form_avg_vote)) is None):
+        form.errors["avg_vote"] = "Average Vote must consist of digits only."
+    else:
+        avg_vote = float(form_avg_vote)
+        if (avg_vote < 0) or (avg_vote > 10):
+            form.errors["avg_vote"] = "Average vote not in valid range."
+        else:
+            form.data["avg_vote"] = avg_vote
 
     form_year = form.get("year")
     if not form_year:
@@ -231,7 +333,9 @@ def signup_page():
             else:
                 hashed_password = hasher.hash(password)
                 db.insert_user(username, hashed_password)
-                flash("You have signed up.")
+                user_ = User(username, password, None, None)
+                flash("You have signed up and logged in.")
+                login_user(user_)
                 next_page = request.args.get("next", url_for("home_page"))
                 return redirect(next_page)
     return render_template("signup.html", form=form)

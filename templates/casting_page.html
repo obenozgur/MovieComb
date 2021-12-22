@@ -29,6 +29,9 @@
       {% for person in persons %}
       <li>
         <h2 class="subtitle has-text-primary-dark"> <a href="{{ url_for('person_page', imdb_name_id = person.imdb_name_id) }}" class="is has-text-primary-dark"> <b>{{person.name}}</b> </a> {{person.character}} as {{person.category}}</h1>
+          {% if current_user.is_admin %}
+          <h2 class="subtitle has-text-danger"> Name ID: {{person.imdb_name_id}}</h2>
+          {% endif %}
       </li>
       {% endfor %}
   </ul>

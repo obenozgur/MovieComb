@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}Edit movie{% endblock %}
+{% block content %}
+    <h1 class="title  has-text-info-dark">Add movie</h1>
+
+    <form action="" method="post" name="movie_add">
+      <div class="field">
+        <label for="title" class="label">Title</label>
+        <div class="control">
+          <input type="text" name="title" class="input" required="required"/>
+        </div>
+        {% if 'title' in values.errors %}
+        <p class="help has-background-warning">
+            {{ values.errors['title'] }}
+        </p>
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <label for="year" class="label">Year</label>
+        <div class="control">
+          <input type="number" name="year" class="input"/>
+        </div>
+        {% if 'year' in values.errors %}
+        <p class="help has-background-warning">
+            {{ values.errors['year'] }}
+        </p>
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <label for="avg_vote" class="label">Average Vote</label>
+        <div class="control">
+          <input type="number" name="avg_vote" class="input" step="0.1"/>
+        </div>
+        {% if 'avg_vote' in values.errors %}
+        <p class="help has-background-warning">
+            {{ values.errors['avg_vote'] }}
+        </p>
+        {% endif %}
+      </div>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary is-medium">Add</button>
+        </div>
+      </div>
+    </form>
+{% endblock %}

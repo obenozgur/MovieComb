@@ -19,6 +19,24 @@ class Database:
             connection.commit()
         return movie_key
 
+    def add_movie_new(self, movie):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            i = 0
+            while(True):
+                query = "SELECT imdb_title_id FROM movies WHERE imdb_title_id = '{}'".format(i)
+                cursor.execute(query)
+                row = cursor.fetchone()
+                if row is None:
+                    print(i)
+                    break
+                else:
+                    i += 1
+            
+            query = "INSERT INTO movies (imdb_title_id, original_title, year, avg_vote) VALUES ('{}','{}',{},{})".format(i, movie.original_title, movie.year, movie.avg_vote)
+            cursor.execute(query)
+            return i
+
     def update_movie(self, movie_key, movie):
         with dbapi2.connect(self.dbfile) as connection:
             cursor = connection.cursor()
@@ -139,7 +157,7 @@ class Database:
     def get_all_users(self):
         with dbapi2.connect(self.dbfile, cursor_factory=RealDictCursor) as connection:
             cursor = connection.cursor()
-            query = "SELECT * FROM users"
+            query = "SELECT * FROM users ORDER by username ASC"
             cursor.execute(query)
 
             rows = cursor.fetchall()
@@ -148,6 +166,7 @@ class Database:
 
             for row in rows:
                 user_ = (User(row["username"], row["password"], row["bio"], row["file_extension"]))
+                self.get_user(row["username"]) ##for profile pictures
                 users.append(user_)
 
             return users
@@ -157,6 +176,14 @@ class Database:
             cursor = connection.cursor()
             query = "INSERT INTO users (username,password) VALUES ('{}','{}')".format(username, password)
             cursor.execute(query)
+
+    def update_bio(self, username, bio):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "UPDATE users SET bio = '{}'WHERE username = '{}'".format(bio, username)
+            cursor.execute(query) 
+           
+
 
     def delete_user(self, username):
         with dbapi2.connect(self.dbfile) as connection:

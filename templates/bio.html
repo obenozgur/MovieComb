@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Edit movie{% endblock %}
+{% block content %}
+    <br>
+    <h1 class="title has-text-info-dark" >{{current_user.username}}'s Bio</h1>
+
+    <form action="" method="post" name="bio_edit">
+      <div class="field">
+        <label for="bio" class="label"></label>
+        <div class="control">
+          <!--<input type="textarea" class = "textarea" rows="10" name="bio" class="input" required="required"/> -->
+          <textarea class="textarea" class="input" name="bio" required="required" rows="10"></textarea>
+        </div>
+        {% if 'bio' in values.errors %}
+        <p class="help has-background-warning">
+            {{ values.errors['bio'] }}
+        </p>
+        {% endif %}
+      </div>
+
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary is-medium">Save</button>
+        </div>
+      </div>
+    </form>
+{% endblock %}
