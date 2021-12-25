@@ -22,3 +22,12 @@
 - Database structure changed to PostgreSQL platform using Pgadmin.
 - All dataset tables are prepared and imported from CSV.
 - BLOB R/W and searchbar done.
+#Week 8 19.11.2021
+- Search results done.
+- New movie page with detailed info is implemented.
+- Director names are bold now.
+#Week 9 26.11.2021
+- Casting and actor page done.
+- User side is completed with pp upload and sign up.
+- User delete feature is added.
+- Bio update and movie adding feature implemented.
