@@ -14,22 +14,34 @@
 
 
 <section class="section is-small">
-    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Year</b>:</span> {{movie.year}}</h2>
-    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Date</b>:</span> {{movie.date_published}}</h2>
-    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Genre</b>:</span> {{movie.genre}}</h2>
-    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Duration</b>:</span> {{movie.duration}} minutes</h2>
-    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Country</b>:</span> {{movie.country}}</h2>
-    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Languages</b>:</span> {{movie.language}}</h2>
-    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Director</b>:</span> {{movie.director}}</h2>
-    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Actors</b>:</span> {{movie.actors}}</h2>
-    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Description</b>:</span>{{movie.description}}</h2>
-    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Average Vote</b>:</span> {{movie.avg_vote}}</h2>
-    <h2 class="subtitle"> <span class="has-text-primary-dark"><b>Votes</b>:</span> {{movie.votes}}</h2>
-    <h2>
+    {% if movie.year %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Year</b>:</span> {{movie.year}}</h2>{% endif %}
+    {% if movie.date_published %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Date</b>:</span> {{movie.date_published}}</h2>{% endif %}
+    {% if movie.genre %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Genre</b>:</span> {{movie.genre}}</h2>{% endif %}
+    {% if movie.duration %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Duration</b>:</span> {{movie.duration}} minutes</h2>{% endif %}
+    {% if movie.country %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Country</b>:</span> {{movie.country}}</h2>{% endif %}
+    {% if movie.language %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Languages</b>:</span> {{movie.language}}</h2>{% endif %}
+    {% if movie.director %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Director</b>:</span> {{movie.director}}</h2>{% endif %}
+    {% if movie.actors %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Actors</b>:</span> {{movie.actors}}</h2>{% endif %}
+    {% if movie.description %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Description</b>:</span>{{movie.description}}</h2>{% endif %}
+    {% if movie.avg_vote %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Average Vote</b>:</span> {{movie.avg_vote}}</h2>{% endif %}
+    {% if movie.votes %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Votes</b>:</span> {{movie.votes}}</h2>{% endif %}
+    <h2 class="subtitle">
       <a class="button is-primary is-dark" href="{{ url_for('casting_page', imdb_id = movie.imdb_title_id) }}">
           <strong>Casting Order</strong>
       </a>
     </h2>
+    {% if current_user.is_admin %}
+    <h2 class="subtitle">
+      <a class="button is-warning is-dark" href="{{ url_for('update_avg_vote_page', imdb_title_id = movie.imdb_title_id) }}">
+          <strong>Update Average Vote</strong>
+      </a>
+    </h2>
+    <h2 class="subtitle">
+      <a class="button is-danger is-dark" href="{{ url_for('delete_movie_page', imdb_title_id = movie.imdb_title_id) }}">
+          <strong>Delete Movie</strong>
+      </a>
+    </h2>
+    {% endif %}
 </section>
 
 {% if current_user.is_authenticated %}

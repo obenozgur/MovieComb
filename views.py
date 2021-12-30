@@ -132,6 +132,41 @@ def movie_new(imdb_id):
     movie = db.get_movie_new(imdb_id)
     return render_template("movie_new.html", movie=movie, imdb_id=imdb_id)
 
+def delete_movie_page(imdb_title_id):
+    db = current_app.config["db"]
+    db.delete_movie_new(imdb_title_id)
+    return redirect(url_for("home_page"))
+    
+
+@login_required
+def update_avg_vote_page(imdb_title_id):
+    if not current_user.is_admin:
+        abort(401)
+    else:
+        db = current_app.config["db"]
+        movie = db.get_movie_new(imdb_title_id)
+
+        if request.method == "GET":
+            values = {"avg_vote": ""}
+            return render_template(
+                "update_avg_vote.html",
+                values=values,
+                movie=movie
+            )
+        else:
+            valid = validate_score_form(request.form)
+            if not valid:
+                return render_template(
+                    "update_avg_vote.html",
+                    values=request.form,
+                    min_score = 0,
+                    max_score = 10,
+                    movie=movie
+                )
+            avg_vote = request.form.data["avg_vote"]
+            db.update_avg_vote(imdb_title_id, avg_vote)
+            return redirect(url_for("movie_new", imdb_id = imdb_title_id))
+
 def casting_page(imdb_id):
     db = current_app.config["db"]
     persons = db.get_persons(imdb_id)
@@ -262,7 +297,7 @@ def validate_movie_form_new(form):
     form.errors = {}
 
     form_title = form.get("title", "").strip()
-    form_director = form.get("director", "").strip()
+    #form_director = form.get("director", "").strip()
     if len(form_title) == 0:
         form.errors["title"] = "Title can not be blank."
     else:
@@ -292,6 +327,25 @@ def validate_movie_form_new(form):
             form.errors["year"] = "Year not in valid range."
         else:
             form.data["year"] = year
+
+    return len(form.errors) == 0
+
+
+def validate_score_form(form):
+    form.data = {}
+    form.errors = {}
+
+    form_avg_vote = form.get("avg_vote")
+    if not form_avg_vote:
+        form.data["avg_vote"] = 0
+    elif (not form_avg_vote.isdigit()) and (re.match(r'^-?\d+(?:\.\d+)$', str(form_avg_vote)) is None):
+        form.errors["avg_vote"] = "Average Vote must consist of digits only."
+    else:
+        avg_vote = float(form_avg_vote)
+        if (avg_vote < 0) or (avg_vote > 10):
+            form.errors["avg_vote"] = "Average vote not in valid range."
+        else:
+            form.data["avg_vote"] = avg_vote
 
     return len(form.errors) == 0
 

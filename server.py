@@ -25,6 +25,8 @@ def create_app():
     app.add_url_rule("/signup", view_func=views.signup_page, methods=["GET", "POST"])
     app.add_url_rule("/profile", view_func=views.profile_page)
     app.add_url_rule("/add_movie", view_func=views.add_movie_new_page, methods=["GET", "POST"])
+    app.add_url_rule("/delete_movie/<string:imdb_title_id>", view_func=views.delete_movie_page)
+    app.add_url_rule("/update_movie/<string:imdb_title_id>", view_func=views.update_avg_vote_page, methods=["GET", "POST"])
     app.add_url_rule("/bio", view_func=views.bio_page, methods = ["GET", "POST"])
     app.add_url_rule("/logout", view_func=views.logout_page)
     app.add_url_rule("/users", view_func=views.users_page)

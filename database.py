@@ -51,6 +51,22 @@ class Database:
             cursor.execute(query)
             connection.commit()
 
+
+    def delete_movie_new(self, imdb_title_id):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "DELETE FROM movies WHERE imdb_title_id = '{}'".format(imdb_title_id)
+            cursor.execute(query)
+            connection.commit()
+
+    def update_avg_vote(self, imdb_title_id, avg_vote):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "UPDATE movies SET avg_vote = {} WHERE imdb_title_id = '{}'".format(avg_vote, imdb_title_id)
+            cursor.execute(query)
+            connection.commit()
+
+
     def get_movie(self, movie_key):
         with dbapi2.connect(self.dbfile) as connection:
             cursor = connection.cursor()
