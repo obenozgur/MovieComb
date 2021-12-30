@@ -41,6 +41,14 @@
                 </div>
                 {% endif %}
 
+                {% if current_user.is_admin %}
+                <div class="navbar-item">
+                    <a class="button is-danger is-light" href="{{ url_for('add_movie_new_page') }}">
+                        <strong>Add Person</strong>
+                    </a>
+                </div>
+                {% endif %}
+
                 <div class="navbar-item">
                     <a class="button is-primary is-light" href="{{ url_for('users_page') }}">
                         <strong>Users</strong>
@@ -48,11 +56,7 @@
                 </div>
                 
 
-                <div class="navbar-item">
-                    <a class="button is-primary is-light" href="{{ url_for('home_page') }}">
-                        <strong>Lists</strong>
-                    </a>
-                </div>
+               
                 {% if not current_user.is_authenticated %}
                 <div class="navbar-item">
                     <a class="button is-primary is-light" href="{{ url_for('login_page') }}"><strong>Log in</strong> </a>
