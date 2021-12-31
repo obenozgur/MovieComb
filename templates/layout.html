@@ -92,6 +92,10 @@
         {% endfor %}
     </header>
 
+    <div id="loader"></div>
+
+<div style="display:none;" id="myDiv" class="animate-bottom">
+
     {% block content %}
     {% endblock %}
 
@@ -102,5 +106,22 @@
         </div>
     </footer>
 </body>
+
+</div>
+
+<script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 350);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("myDiv").style.display = "block";
+}
+</script>
+
+
 
 </html>
