@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My movies - {% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='mymovies.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 </head>
@@ -43,7 +43,7 @@
 
                 {% if current_user.is_admin %}
                 <div class="navbar-item">
-                    <a class="button is-danger is-light" href="{{ url_for('add_movie_new_page') }}">
+                    <a class="button is-danger is-light" href="{{ url_for('add_person_page') }}">
                         <strong>Add Person</strong>
                     </a>
                 </div>

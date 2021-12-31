@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block title %}Add Person{% endblock %}
+{% block content %}
+    <h1 class="title  has-text-info-dark">Add person</h1>
+
+    <form action="" method="post" name="person_add">
+      <div class="field">
+        <label for="name" class="label">Name</label>
+        <div class="control">
+          <input type="text" name="name" class="input" required="required"/>
+        </div>
+        {% if 'name' in values.errors %}
+        <p class="help has-background-warning">
+            {{ values.errors['name'] }}
+        </p>
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <label for="birth_name" class="label">Birth Name</label>
+        <div class="control">
+          <input type="text" name="birth_name" class="input" required="required"/>
+        </div>
+        {% if 'birth_name' in values.errors %}
+        <p class="help has-background-warning">
+            {{ values.errors['birth_name'] }}
+        </p>
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <label for="height" class="label">Height</label>
+        <div class="control">
+          <input type="number" name="height" class="input"/>
+        </div>
+        {% if 'height' in values.errors %}
+        <p class="help has-background-warning">
+            {{ values.errors['height'] }}
+        </p>
+        {% endif %}
+      </div>
+
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary is-medium">Add</button>
+        </div>
+      </div>
+    </form>
+{% endblock %}

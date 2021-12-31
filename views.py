@@ -85,6 +85,34 @@ def add_movie_new_page():
             imdb_title_id = db.add_movie_new(movie)
             return redirect(url_for("movie_new", imdb_id = imdb_title_id))
 
+@login_required
+def add_person_page():
+    if not current_user.is_admin:
+        abort(401)
+    else:
+        if request.method == "GET":
+            values = {"name": "", "birth_name": "", "height": ""}
+            return render_template(
+                "add_person.html",
+                values=values,
+            )
+        else:
+            valid = validate_person_form(request.form)
+            if not valid:
+                return render_template(
+                    "add_person.html",
+                    min_height=20,
+                    max_height=1000,
+                    values=request.form,
+                )
+            name = request.form.data["name"]
+            birth_name = request.form.data["birth_name"]
+            height = request.form.data["height"]
+            person = Person("", name, birth_name, height, "", "", "", "", "")
+            db = current_app.config["db"]
+            print(name,birth_name,height)
+            imdb_name_id = db.add_person(person)
+            return redirect(url_for("person_page", imdb_name_id = imdb_name_id))
 
 def users_page():
     db = current_app.config["db"]
@@ -136,6 +164,42 @@ def delete_movie_page(imdb_title_id):
     db = current_app.config["db"]
     db.delete_movie_new(imdb_title_id)
     return redirect(url_for("home_page"))
+
+def delete_person_page(imdb_name_id):
+    db = current_app.config["db"]
+    db.delete_person(imdb_name_id)
+    return redirect(url_for("home_page"))
+
+
+@login_required
+def update_height_page(imdb_name_id):
+    if not current_user.is_admin:
+        abort(401)
+    else:
+        db = current_app.config["db"]
+        person = db.get_person(imdb_name_id)
+
+        if request.method == "GET":
+            values = {"height": ""}
+            return render_template(
+                "update_height.html",
+                values=values,
+                person=person
+            )
+        else:
+            valid = validate_height_form(request.form)
+            if not valid:
+                return render_template(
+                    "update_height.html",
+                    values=request.form,
+                    min_height = 20,
+                    max_height = 1000,
+                    person=person
+                )
+            height = request.form.data["height"]
+            db.update_height(imdb_name_id, height)
+            return redirect(url_for("person_page", imdb_name_id = imdb_name_id))
+
     
 
 @login_required
@@ -350,6 +414,59 @@ def validate_score_form(form):
     return len(form.errors) == 0
 
 
+def validate_person_form(form):
+    form.data = {}
+    form.errors = {}
+
+    form_name = form.get("name", "").strip()
+    if len(form_name) == 0:
+        form.errors["name"] = "Name can not be blank."
+    else:
+        form.data["name"] = form_name
+
+    
+    form_birth_name = form.get("birth_name", "").strip()
+    if len(form_name) == 0:
+        form.errors["birth_name"] = "Birth name can not be blank."
+    else:
+        form.data["birth_name"] = form_birth_name
+    
+
+    height = form.get("height")
+    if not height:
+        form.data["height"] = None
+    elif not height.isdigit():
+        form.errors["height"] = "Height must consist of digits only."
+    else:
+        height = int(height)
+        if (height < 20) or (height > 1000):
+            form.errors["height"] = "Height not in valid range."
+        else:
+            form.data["height"] = height
+
+    return len(form.errors) == 0
+
+
+
+def validate_height_form(form):
+    form.data = {}
+    form.errors = {}
+
+    height = form.get("height")
+    if not height:
+        form.data["height"] = None
+    elif not height.isdigit():
+        form.errors["height"] = "Height must consist of digits only."
+    else:
+        height = int(height)
+        if (height < 20) or (height > 1000):
+            form.errors["height"] = "Height not in valid range."
+        else:
+            form.data["height"] = height
+
+    return len(form.errors) == 0
+
+
 
 def login_page():
     form = LoginForm()
@@ -395,7 +512,7 @@ def signup_page():
     return render_template("signup.html", form=form)
 
 
-"""def movies_new_page():
+def movies_new_page():
     db = current_app.config["db"]
     if request.method == "GET":
         return render_template("movies_search.html")
@@ -413,7 +530,7 @@ def signup_page():
         movies = db.search_movie(title, score, lang, genres)
 
         return render_template("search.html", movies=movies) 
-        #return redirect(url_for("search_movies_page",movies=movies))"""
+        #return redirect(url_for("search_movies_page",movies=movies))
 
 
 def search_movies_page(movies):

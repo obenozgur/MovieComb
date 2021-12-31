@@ -1,19 +1,19 @@
 {% extends "layout.html" %}
-{% block title %}Update Vote{% endblock %}
+{% block title %}Update Height{% endblock %}
 {% block content %}
-    <h1 class="title  has-text-info-dark">Update {{movie.original_title}}'s Average Vote</h1>
+    <h1 class="title  has-text-info-dark">Update {{person.name}}'s Height</h1>
 
     <form action="" method="post" name="update_avg_vote">
       
 
       <div class="field">
-        <label for="avg_vote" class="label">Average Vote</label>
+        <label for="height" class="label">Height</label>
         <div class="control">
-          <input type="number" name="avg_vote" class="input" step="0.1"/>
+          <input type="number" name="height" class="input"/>
         </div>
-        {% if 'avg_vote' in values.errors %}
+        {% if 'height' in values.errors %}
         <p class="help has-background-warning">
-            {{ values.errors['avg_vote'] }}
+            {{ values.errors['height'] }}
         </p>
         {% endif %}
       </div>

@@ -21,6 +21,19 @@
     {% if person.date_of_death %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Date of Death</b>:</span> {{person.date_of_death}}</h2>{% endif %}
     {% if person.place_of_death %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Place of Death</b>:</span> {{person.place_of_death}}</h2>{% endif %}
     {% if person.bio %}<h2 class="subtitle"> <span class="has-text-primary-dark"><b>Bio</b>:</span> {{person.bio}}</h2>{% endif %}
+
+    {% if current_user.is_admin %}
+    <h2 class="subtitle">
+      <a class="button is-warning is-dark" href="{{ url_for('update_height_page', imdb_name_id = person.imdb_name_id) }}">
+          <strong>Update Height</strong>
+      </a>
+    </h2>
+    <h2 class="subtitle">
+      <a class="button is-danger is-dark" href="{{ url_for('delete_person_page', imdb_name_id = person.imdb_name_id) }}">
+          <strong>Delete Person</strong>
+      </a>
+    </h2>
+    {% endif %}
 </section>
 
 {% if current_user.is_authenticated %}

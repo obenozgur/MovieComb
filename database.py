@@ -37,6 +37,40 @@ class Database:
             cursor.execute(query)
             return i
 
+    def add_person(self, person):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            i = 0
+            while(True):
+                query = "SELECT imdb_name_id FROM names WHERE imdb_name_id = '{}'".format(i)
+                cursor.execute(query)
+                row = cursor.fetchone()
+                if row is None:
+                    print(i)
+                    break
+                else:
+                    i += 1
+            
+            query = "INSERT INTO names (imdb_name_id, name, birth_name, height) VALUES ('{}','{}','{}',{})".format(i, person.name, person.birth_name, person.height)
+            cursor.execute(query)
+            return i
+
+    def delete_person(self, imdb_name_id):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "DELETE FROM names WHERE imdb_name_id = '{}'".format(imdb_name_id)
+            cursor.execute(query)
+            connection.commit()
+
+    def update_height(self, imdb_name_id, height):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "UPDATE names SET height = {} WHERE imdb_name_id = '{}'".format(height, imdb_name_id)
+            cursor.execute(query)
+            connection.commit()
+
+
+
     def update_movie(self, movie_key, movie):
         with dbapi2.connect(self.dbfile) as connection:
             cursor = connection.cursor()
