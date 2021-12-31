@@ -12,8 +12,9 @@ class Person:
 
 
 class PersonShort:
-    def __init__(self, imdb_name_id, name, category, character):
+    def __init__(self, imdb_name_id, name, category, character, ordering):
         self.imdb_name_id = imdb_name_id
         self.name = name
         self.category = category
         self.character = character
+        self.ordering = ordering

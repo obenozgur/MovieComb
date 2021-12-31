@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
-{% block title %}{{movie_name}} Casting{% endblock %}
+{% block title %}{{movie.original_title}} Casting{% endblock %}
 {% block content %}
 <section class="hero">
     <div class="hero-body">
       <div class="container has-text-centered">
-        <h1 class="title has-text-info-dark">{{movie_name}} Casting</h1>
+        <h1 class="title has-text-info-dark">{{movie.original_title}} Casting</h1>
       </div>
     </div>
   </section>
@@ -24,11 +24,14 @@
   {% endfor %}
 
   -->
+
+  
+
 <div class="content">
   <ul>
       {% for person in persons %}
       <li>
-        <h2 class="subtitle has-text-primary-dark"> <a href="{{ url_for('person_page', imdb_name_id = person.imdb_name_id) }}" class="is has-text-primary-dark"> <b>{{person.name}}</b> </a> {{person.character}} as {{person.category}}</h1>
+        <h2 class="subtitle has-text-primary-dark"> <a href="{{ url_for('person_page', imdb_name_id = person.imdb_name_id) }}" class="is has-text-primary-dark"> <b>{{person.name}}</b> </a> {{person.character}} {% if person.category %} as {{person.category}} {% endif %} {% if current_user.is_admin %} <a class="button is-danger is-dark" href="{{ url_for('delete_from_casting_page', imdb_title_id = movie.imdb_title_id, imdb_name_id = person.imdb_name_id, ordering = person.ordering) }}"><strong>Delete From Casting</strong> </a>  <a class="button is-warning is-dark" href="{{ url_for('update_category_page', imdb_title_id = movie.imdb_title_id, imdb_name_id = person.imdb_name_id, ordering = person.ordering) }}"><strong>Update Category</strong> </a> {% endif %}</h2>
           {% if current_user.is_admin %}
           <h2 class="subtitle has-text-danger"> Name ID: {{person.imdb_name_id}}</h2>
           {% endif %}

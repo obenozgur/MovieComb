@@ -49,6 +49,14 @@
                 </div>
                 {% endif %}
 
+                {% if current_user.is_admin %}
+                <div class="navbar-item">
+                    <a class="button is-danger is-light" href="{{ url_for('add_casting_page') }}">
+                        <strong>Add Casting</strong>
+                    </a>
+                </div>
+                {% endif %}
+
                 <div class="navbar-item">
                     <a class="button is-primary is-light" href="{{ url_for('users_page') }}">
                         <strong>Users</strong>

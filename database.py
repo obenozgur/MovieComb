@@ -28,7 +28,7 @@ class Database:
                 cursor.execute(query)
                 row = cursor.fetchone()
                 if row is None:
-                    print(i)
+                    #print(i)
                     break
                 else:
                     i += 1
@@ -46,7 +46,7 @@ class Database:
                 cursor.execute(query)
                 row = cursor.fetchone()
                 if row is None:
-                    print(i)
+                   #print(i)
                     break
                 else:
                     i += 1
@@ -54,6 +54,43 @@ class Database:
             query = "INSERT INTO names (imdb_name_id, name, birth_name, height) VALUES ('{}','{}','{}',{})".format(i, person.name, person.birth_name, person.height)
             cursor.execute(query)
             return i
+
+    def add_casting(self, imdb_title_id, imdb_name_id):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            i = 1
+            while(True):
+                query = "SELECT * FROM title_principals WHERE imdb_name_id = '{}' AND imdb_title_id = '{}' AND ordering = {}".format(imdb_name_id, imdb_title_id, i)
+                cursor.execute(query)
+                row = cursor.fetchone()
+                if row is None:
+                    #print(i)
+                    break
+                else:
+                    i += 1
+
+            query = "INSERT INTO title_principals (imdb_title_id, imdb_name_id, ordering) VALUES ('{}','{}',{})".format(imdb_title_id, imdb_name_id, i)
+            cursor.execute(query)
+            return i
+
+    def delete_from_casting(self, imdb_title_id, imdb_name_id, ordering):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "DELETE FROM title_principals WHERE imdb_title_id = '{}' AND imdb_name_id = '{}' AND ordering = {}".format(imdb_title_id, imdb_name_id, ordering)
+            cursor.execute(query)
+            return True
+
+
+    def update_category(self, imdb_title_id, imdb_name_id, ordering, category):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "UPDATE title_principals SET category = '{}' WHERE imdb_title_id = '{}' AND imdb_name_id = '{}' AND ordering = {}".format(category, imdb_title_id, imdb_name_id, ordering)
+            cursor.execute(query)
+            connection.commit()
+
+
+            
+
 
     def delete_person(self, imdb_name_id):
         with dbapi2.connect(self.dbfile) as connection:
@@ -116,6 +153,10 @@ class Database:
             query = "SELECT * FROM movies WHERE imdb_title_id = '{}'".format(imdb_id)
             cursor.execute(query)
             row = cursor.fetchone()
+
+            if row is None:
+                return None
+
             movie = MovieNew(row["imdb_title_id"], row["original_title"], row["year"], row["date_published"], row["genre"], row["duration"], row["country"], row["language"], row["director"], row["actors"], row["description"], row["avg_vote"], row["votes"])
             return movie
 
@@ -123,7 +164,7 @@ class Database:
         with dbapi2.connect(self.dbfile,cursor_factory=RealDictCursor) as connection:
             cursor = connection.cursor()
 
-            query = """select names.imdb_name_id, name, category, characters from 
+            query = """select names.imdb_name_id, name, category, characters, ordering from 
 	                    movies join title_principals on movies.imdb_title_id = title_principals.imdb_title_id 
 	                    join names on title_principals.imdb_name_id = names.imdb_name_id
 	                    where movies.imdb_title_id = '{}'
@@ -136,11 +177,13 @@ class Database:
 
             personshorts = []
 
+
             moviedict = {
                 "imdb_name_id": "",
                 "name": "",
                 "category": "",
-                "characters": ""
+                "characters": "",
+                "ordering": ""
                 }
 
             #for i in rows:
@@ -152,7 +195,7 @@ class Database:
                         moviedict[str(column)] = row[str(column)]
                         #print(moviedict[str(column)])
 
-                person = PersonShort(moviedict["imdb_name_id"],moviedict["name"],moviedict["category"],moviedict["characters"])
+                person = PersonShort(moviedict["imdb_name_id"],moviedict["name"],moviedict["category"],moviedict["characters"],moviedict["ordering"])
                 personshorts.append(person)
 
                 for key in moviedict:
@@ -169,6 +212,8 @@ class Database:
             query = "SELECT * FROM names WHERE imdb_name_id = '{}'".format(imdb_name_id)
             cursor.execute(query)
             row = cursor.fetchone()
+            if row is None:
+                return None
             person = Person(row["imdb_name_id"], row["name"], row["birth_name"], row["height"], row["bio"], row["date_of_birth"], row["place_of_birth"], row["date_of_death"], row["place_of_death"])
             return person
         

@@ -114,6 +114,59 @@ def add_person_page():
             imdb_name_id = db.add_person(person)
             return redirect(url_for("person_page", imdb_name_id = imdb_name_id))
 
+
+@login_required
+def add_casting_page():
+    if not current_user.is_admin:
+        abort(401)
+    else:
+        if request.method == "GET":
+            values = {"movie_id": "", "person_id": ""}
+            return render_template(
+                "add_casting.html",
+                values=values
+            )
+        else:
+            valid = validate_casting_form(request.form)
+            if not valid:
+                return render_template(
+                    "add_casting.html",
+                    values=request.form,
+                )
+            imdb_title_id = request.form.data["movie_id"]
+            imdb_name_id = request.form.data["person_id"]
+            db = current_app.config["db"]
+            db.add_casting(imdb_title_id, imdb_name_id)
+            print(imdb_title_id)
+            print(imdb_name_id)
+            return redirect(url_for("casting_page", imdb_id = imdb_title_id))
+
+@login_required
+def update_category_page(imdb_title_id, imdb_name_id, ordering):
+    if not current_user.is_admin:
+        abort(401)
+    else:
+        if request.method == "GET":
+            values = {"category": ""}
+            return render_template(
+                "update_category.html",
+                values=values
+            )
+        else:
+            valid = validate_category_form(request.form)
+            if not valid:
+                return render_template(
+                    "update_category.html",
+                    values=request.form,
+                )
+
+            category = request.form.data["category"]
+            db = current_app.config["db"]
+            db.update_category(imdb_title_id, imdb_name_id, ordering, category)
+            return redirect(url_for("casting_page", imdb_id = imdb_title_id))
+    
+
+
 def users_page():
     db = current_app.config["db"]
     users = db.get_all_users()
@@ -235,7 +288,18 @@ def casting_page(imdb_id):
     db = current_app.config["db"]
     persons = db.get_persons(imdb_id)
     movie = db.get_movie_new(imdb_id)
-    return render_template("casting_page.html", imdb_id = imdb_id, movie_name = movie.original_title, persons = persons)
+    return render_template("casting_page.html", imdb_id = imdb_id, movie = movie, persons = persons)
+
+@login_required
+def delete_from_casting_page(imdb_title_id, imdb_name_id, ordering):
+    if not current_user.is_admin:
+        abort(401)
+    print(imdb_name_id)
+    print(imdb_title_id)
+    print(ordering)
+    db = current_app.config["db"]
+    db.delete_from_casting(imdb_title_id, imdb_name_id, ordering)
+    return redirect(url_for("casting_page", imdb_id = imdb_title_id))
 
 def person_page(imdb_name_id):
     db = current_app.config["db"]
@@ -445,6 +509,51 @@ def validate_person_form(form):
             form.data["height"] = height
 
     return len(form.errors) == 0
+
+
+def validate_casting_form(form):
+    form.data = {}
+    form.errors = {}
+    db = current_app.config["db"]
+
+    form_movie_id = form.get("movie_id", "").strip()
+    if len(form_movie_id) == 0:
+        form.errors["movie_id"] = "Movie ID can not be blank."
+    else:
+        movie = db.get_movie_new(form_movie_id)
+        if movie is None:
+            form.errors["movie_id"] = "Movie ID does not exist."
+        else: 
+            form.data["movie_id"] = form_movie_id
+
+    
+    form_person_id = form.get("person_id", "").strip()
+    if len(form_person_id) == 0:
+        form.errors["person_id"] = "Person ID name can not be blank."
+    else:
+        person = db.get_person(form_person_id)
+        if person is None:
+            form.errors["person_id"] = "Person ID does not exist."
+        else:
+            form.data["person_id"] = form_person_id
+    
+
+    
+    return len(form.errors) == 0
+
+
+def validate_category_form(form):
+    form.data = {}
+    form.errors = {}
+
+    form_category = form.get("category", "").strip()
+    if len(form_category) == 0:
+        form.errors["category"] = "Category can not be blank."
+    else:
+        form.data["category"] = form_category
+
+    return len(form.errors) == 0
+
 
 
 

@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Add Casting{% endblock %}
+{% block content %}
+    <h1 class="title  has-text-info-dark">Add casting</h1>
+
+    <form action="" method="post" name="casting_add">
+      <div class="field">
+        <label for="movie_id" class="label">Movie ID</label>
+        <div class="control">
+          <input type="text" name="movie_id" class="input" required="required"/>
+        </div>
+        {% if 'movie_id' in values.errors %}
+        <p class="help has-background-warning">
+            {{ values.errors['movie_id'] }}
+        </p>
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <label for="person_id" class="label">Person ID:</label>
+        <div class="control">
+          <input type="text" name="person_id" class="input" required="required"/>
+        </div>
+        {% if 'person_id' in values.errors %}
+        <p class="help has-background-warning">
+            {{ values.errors['person_id'] }}
+        </p>
+        {% endif %}
+      </div>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary is-medium">Add</button>
+        </div>
+      </div>
+    </form>
+{% endblock %}

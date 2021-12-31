@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}Update Category{% endblock %}
+{% block content %}
+    <h1 class="title  has-text-info-dark">Update Category</h1>
+
+    <form action="" method="post" name="update_category">
+      
+
+      <div class="field">
+        <label for="category" class="label">Category</label>
+        <div class="control">
+          <input type="text" name="category" class="input"/>
+        </div>
+        {% if 'category' in values.errors %}
+        <p class="help has-background-warning">
+            {{ values.errors['category'] }}
+        </p>
+        {% endif %}
+      </div>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary is-medium">Update</button>
+        </div>
+      </div>
+    </form>
+{% endblock %}
