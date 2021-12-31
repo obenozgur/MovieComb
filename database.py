@@ -60,7 +60,7 @@ class Database:
             cursor = connection.cursor()
             i = 1
             while(True):
-                query = "SELECT * FROM title_principals WHERE imdb_name_id = '{}' AND imdb_title_id = '{}' AND ordering = {}".format(imdb_name_id, imdb_title_id, i)
+                query = "SELECT * FROM title_principals WHERE imdb_title_id = '{}' AND ordering = {}".format(imdb_title_id, i)
                 cursor.execute(query)
                 row = cursor.fetchone()
                 if row is None:

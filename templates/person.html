@@ -36,12 +36,4 @@
     {% endif %}
 </section>
 
-{% if current_user.is_authenticated %}
-    <div class="field is-grouped">
-      <div class="control">
-        <a class="button is-primary is-outlined is-small"
-           href="{{ request.path }}/edit">Edit</a>
-      </div>
-    </div>
-    {% endif %}
 {% endblock %}
