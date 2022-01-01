@@ -1,10 +1,4 @@
 class Movie:
-    def __init__(self, title, year=None):
-        self.title = title
-        self.year = year
-    
-
-class MovieNew:
     def __init__(self, imdb_title_id, original_title, year, date_published, genre, duration, country, language, director, actors, description, avg_vote, votes):
         self.imdb_title_id = imdb_title_id
         self.original_title = original_title

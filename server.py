@@ -5,7 +5,6 @@ import os
 
 import views
 from database import Database
-from movie import Movie
 from user import get_user
 
 lm = LoginManager()
@@ -34,12 +33,7 @@ def create_app():
     app.add_url_rule("/logout", view_func=views.logout_page)
     app.add_url_rule("/users", view_func=views.users_page)
     app.add_url_rule("/delete_user", view_func=views.delete_profile_page)
-    app.add_url_rule("/movies", view_func=views.movies_page, methods=["GET", "POST"])
-    app.add_url_rule("/movie/<int:movie_key>", view_func=views.movie_page)
-    app.add_url_rule("/new-movie", view_func=views.movie_add_page, methods=["GET", "POST"])
-    app.add_url_rule("/movie/<int:movie_key>/edit", view_func=views.movie_edit_page, methods=["GET", "POST"])
-    #app.add_url_rule("/movies_search", view_func=views.movies_new_page, methods=["GET", "POST"])
-    app.add_url_rule("/movie_new/<string:imdb_id>", view_func=views.movie_new)
+    app.add_url_rule("/movie/<string:imdb_id>", view_func=views.movie_new)
     app.add_url_rule("/movie/<string:imdb_id>/casting", view_func=views.casting_page)
     app.add_url_rule("/casting_delete/<string:imdb_title_id>/<string:imdb_name_id>/<int:ordering>", view_func=views.delete_from_casting_page)
     app.add_url_rule("/update_category/<string:imdb_title_id>/<string:imdb_name_id>/<int:ordering>", view_func=views.update_category_page, methods=["GET","POST"])
