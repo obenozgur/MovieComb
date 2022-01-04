@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}{{person.name}}{% endblock %}
 {% block content %}
+{% if person %}
 <section class="hero">
     <div class="hero-body">
       <div class="container has-text-centered">
@@ -36,4 +37,5 @@
     {% endif %}
 </section>
 
+{% endif%}
 {% endblock %}
