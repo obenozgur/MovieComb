@@ -13,19 +13,21 @@
 
     <header class="is-marginless">
         <nav class="navbar has-shadow has-background-success" role="navigation" aria-label="main navigation">
+            <a class="navbar-item" href="{{ url_for('home_page') }}">
+                <img src="./static/comb.png" >
+                <strong class="has-text-black">MovieComb</strong>
+              </a>
             <div class="navbar-menu">
+                <!--
                 <div class="navbar-start">
                     <div class="navbar-item">
                         <a class="button is-primary is-light" href="{{ url_for('home_page') }}">
                             <strong>Home</strong>
                         </a>
                     </div>
-                    <div class="navbar-item">
-                        <a class="button is-primary is-light" href="{{ url_for('users_page') }}">
-                            <strong>Users</strong>
-                        </a>
-                    </div>
+                    
                 </div>
+                -->
             </div>
             <div class="navbar-end">
                 {% if current_user.is_admin %}
@@ -54,7 +56,12 @@
 
                 
                 
-
+                
+                <div class="navbar-item">
+                    <a class="button is-primary is-light" href="{{ url_for('users_page') }}">
+                        <strong>Users</strong>
+                    </a>
+                </div>
                
                 {% if not current_user.is_authenticated %}
                 <div class="navbar-item">
