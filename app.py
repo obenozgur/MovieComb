@@ -45,16 +45,6 @@ def create_app():
     lm.init_app(app)
     lm.login_view = "login_page"
 
-    """db = Database()
-    db.add_movie(Movie("Slaughterhouse-Five", year=1972))
-    db.add_movie(Movie("The Shining"))
-    app.config["db"] = db"""
-
-    """current_directory = os.getcwd()
-    print(current_directory)
-    db = Database(os.path.join(current_directory, "database.sqlite"))
-    app.config["db"] = db"""
-
 
     
     db = Database("host='localhost' user='postgres' password='password' dbname='DBProject'")
