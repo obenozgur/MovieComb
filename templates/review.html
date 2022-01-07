@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Add Review{% endblock %}
+{% block content %}
+    <br>
+    <h1 class="title has-text-info-dark" >Add review to {{movie.original_title}}</h1>
+
+    <form action="" method="post" name="review_content">
+      <div class="field">
+        <label for="review_content" class="label"></label>
+        <div class="control">
+          <!--<input type="textarea" class = "textarea" rows="10" name="bio" class="input" required="required"/> -->
+          <textarea class="textarea" class="input" name="review_content" required="required" rows="10"></textarea>
+        </div>
+        {% if 'review_content' in values.errors %}
+        <p class="help has-background-warning">
+            {{ values.errors['review_content'] }}
+        </p>
+        {% endif %}
+      </div>
+
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary is-medium">Add</button>
+        </div>
+      </div>
+    </form>
+{% endblock %}

@@ -12,9 +12,9 @@
 <body class=" is-marginless has-text-grey-dark" onload="myFunction()" style="margin:0;">
 
     <header class="is-marginless">
-        <nav class="navbar has-shadow has-background-success" role="navigation" aria-label="main navigation">
+        <nav class="navbar has-shadow has-background-warning" role="navigation" aria-label="main navigation">
             <a class="navbar-item" href="{{ url_for('home_page') }}">
-                <img src="./static/comb.png" >
+                <img src="{{ url_for('static', filename='comb.png') }}" >
                 <strong class="has-text-black">MovieComb</strong>
               </a>
             <div class="navbar-menu">
@@ -58,28 +58,28 @@
                 
                 
                 <div class="navbar-item">
-                    <a class="button is-primary is-light" href="{{ url_for('users_page') }}">
+                    <a class="button is-warning is-light" href="{{ url_for('users_page') }}">
                         <strong>Users</strong>
                     </a>
                 </div>
                
                 {% if not current_user.is_authenticated %}
                 <div class="navbar-item">
-                    <a class="button is-primary is-light" href="{{ url_for('login_page') }}"><strong>Log in</strong> </a>
+                    <a class="button is-warning is-light" href="{{ url_for('login_page') }}"><strong>Log in</strong> </a>
                 </div>
                 {% else %}
                 <div class="navbar-item">
-                    <a class="button is-primary is-light" href="{{ url_for('profile_page', username=current_user.username) }}"><strong>{{ current_user.username }}</strong> </a>
+                    <a class="button is-warning is-light" href="{{ url_for('profile_page', username=current_user.username) }}"><strong>{{ current_user.username }}</strong> </a>
                 </div>
                 
                 <div class="navbar-item">
-                    <a class="button is-primary is-light" href="{{ url_for('logout_page') }}"><strong>Log out</strong></a>
+                    <a class="button is-warning is-light" href="{{ url_for('logout_page') }}"><strong>Log out</strong></a>
                 </div>
                 {% endif %}
 
                 {% if not current_user.is_authenticated %}
                 <div class="navbar-item">
-                    <a class="button is-primary is-light" href="{{ url_for('signup_page') }}"><strong>Sign up</strong> </a>
+                    <a class="button is-warning is-light" href="{{ url_for('signup_page') }}"><strong>Sign up</strong> </a>
                 </div>
                 {% endif %}
             </div>

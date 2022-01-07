@@ -3,6 +3,7 @@ from psycopg2.extras import RealDictCursor
 
 from movie import Movie, MovieShort
 from person import Person, PersonShort
+from review import Review
 from user import User
 
 
@@ -19,7 +20,6 @@ class Database:
                 cursor.execute(query)
                 row = cursor.fetchone()
                 if row is None:
-                    #print(i)
                     break
                 else:
                     i += 1
@@ -27,6 +27,29 @@ class Database:
             query = "INSERT INTO movies (imdb_title_id, original_title, year, avg_vote) VALUES ('{}','{}',{},{})".format(i, movie.original_title, movie.year, movie.avg_vote)
             cursor.execute(query)
             return i
+
+    def insert_review(self, username, review, imdb_title_id):
+        with dbapi2.connect(self.dbfile) as connection:
+            cursor = connection.cursor()
+            query = "INSERT INTO reviews (imdb_title_id, username, review) VALUES ('{}','{}','{}')".format(imdb_title_id, username, review)
+            cursor.execute(query)
+
+    def get_reviews(self, imdb_title_id):
+        with dbapi2.connect(self.dbfile,cursor_factory=RealDictCursor) as connection:
+            cursor = connection.cursor()
+            query = "SELECT * FROM reviews WHERE imdb_title_id = '{}'".format(imdb_title_id)
+            reviews = []
+            cursor.execute(query)
+
+            rows = cursor.fetchall()
+
+            for row in rows:
+                review = Review(row["username"], row["review"])
+                reviews.append(review)
+
+            return reviews
+
+
 
     def add_person(self, person):
         with dbapi2.connect(self.dbfile) as connection:
@@ -37,7 +60,6 @@ class Database:
                 cursor.execute(query)
                 row = cursor.fetchone()
                 if row is None:
-                   #print(i)
                     break
                 else:
                     i += 1
@@ -55,7 +77,6 @@ class Database:
                 cursor.execute(query)
                 row = cursor.fetchone()
                 if row is None:
-                    #print(i)
                     break
                 else:
                     i += 1
@@ -135,7 +156,6 @@ class Database:
             cursor.execute(query)
             rows = cursor.fetchall()
 
-            #print(len(rows))
 
             personshorts = []
 
@@ -148,23 +168,17 @@ class Database:
                 "ordering": ""
                 }
 
-            #for i in rows:
-                #print(i["original_title"])
 
             for row in rows:
                 for column in row:
                     if(not row[str(column)] is None):
                         moviedict[str(column)] = row[str(column)]
-                        #print(moviedict[str(column)])
 
                 person = PersonShort(moviedict["imdb_name_id"],moviedict["name"],moviedict["category"],moviedict["characters"],moviedict["ordering"])
                 personshorts.append(person)
 
                 for key in moviedict:
                     moviedict[key] = ""
-
-            #print(len(personshorts))
-
             
         return personshorts
 
@@ -280,8 +294,6 @@ class Database:
 
             query = query + " ORDER BY year DESC"
 
-            print(query)
-
             moviedict = {
                 "imdb_title_id": "Unknown",
                 "original_title": "Unknown",
@@ -292,18 +304,14 @@ class Database:
             cursor.execute(query)
             rows = cursor.fetchall()
 
-            #print(len(rows))
 
             movies = []
 
-            #for i in rows:
-                #print(i["original_title"])
 
             for row in rows:
                 for column in row:
                     if(not row[str(column)] is None):
                         moviedict[str(column)] = row[str(column)]
-                        #print(moviedict[str(column)])
 
                 movie = MovieShort(moviedict["imdb_title_id"],moviedict["original_title"],moviedict["year"],moviedict["director"])
                 movies.append(movie)
@@ -311,7 +319,6 @@ class Database:
                 for key in moviedict:
                     moviedict[key] = "Unknown"
 
-            #print(len(movies))
             
         return movies
     

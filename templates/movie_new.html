@@ -31,6 +31,15 @@
           <strong>Casting Order</strong>
       </a>
     </h2>
+
+    {% if current_user.is_authenticated %}
+    <h2 class="subtitle">
+      <a class="button is-link is-dark" href="{{ url_for('add_review_page', imdb_title_id = movie.imdb_title_id) }}">
+          <strong>Add Review</strong>
+      </a>
+    </h2>
+    {% endif %}
+
     {% if current_user.is_admin %}
     <h2 class="subtitle">
       <a class="button is-warning is-dark" href="{{ url_for('update_avg_vote_page', imdb_title_id = movie.imdb_title_id) }}">
@@ -43,6 +52,53 @@
       </a>
     </h2>
     {% endif %}
+
+    
+{% if reviews %}
+
+<h1 class="title has-text-info-dark has-text-centered">Reviews</h1>
+
+<div class="columns is-gapless is-multiline">
+
+{% for review in reviews %}
+
+<div class="column is-4">
+
+<section class="section is-small">
+
+<div class="card is-small has-background-success-light">
+  <div class="card-image">
+  </div>
+  <br>
+  <div class="card-content">
+    <div class="media">
+      <div class="media-content has-text-centered">
+        <p class="title is-4">{{review.username}}</p>
+      </div>
+    </div>
+  </div>
+
+    <div class="content">
+      {{review.review_content}}
+      <br>
+      <br>
+    </div>
+</div>
+
+</section>
+
+</div>
+
+
+
+
+{% endfor %}
+
+</div>
+{% endif %}
+
+
+
 </section>
 
 {% endif %}

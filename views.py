@@ -17,15 +17,10 @@ def home_page():
     if request.method == "GET":
         return render_template("movies_search.html")
     else:
-        print("\nRead Form:")
         title = request.form["title"]
-        print(title)
         score = request.form["score"]
-        print(score)
         lang = request.form["answer"]
-        print(lang)
         genres = request.form.getlist("genres")
-        print(genres)
 
         movies = db.search_movie(title, score, lang, genres)
         return render_template("search.html", movies=movies) 
@@ -78,7 +73,6 @@ def add_movie_new_page():
             avg_vote = request.form.data["avg_vote"]
             movie = Movie("", title, year, "", "", "", "", "", "Unknown", "", "", avg_vote, 0)
             db = current_app.config["db"]
-            print(title,year,avg_vote)
             imdb_title_id = db.add_movie_new(movie)
             return redirect(url_for("movie_new", imdb_id = imdb_title_id))
 
@@ -107,7 +101,6 @@ def add_person_page():
             height = request.form.data["height"]
             person = Person("", name, birth_name, height, "", "", "", "", "")
             db = current_app.config["db"]
-            print(name,birth_name,height)
             imdb_name_id = db.add_person(person)
             return redirect(url_for("person_page", imdb_name_id = imdb_name_id))
 
@@ -134,8 +127,6 @@ def add_casting_page():
             imdb_name_id = request.form.data["person_id"]
             db = current_app.config["db"]
             db.add_casting(imdb_title_id, imdb_name_id)
-            print(imdb_title_id)
-            print(imdb_name_id)
             return redirect(url_for("casting_page", imdb_id = imdb_title_id))
 
 @login_required
@@ -185,12 +176,32 @@ def users_page():
 
     return render_template("users.html", contents = contents)
 
+@login_required
+def add_review_page(imdb_title_id):
+    db = current_app.config["db"]
+
+    if request.method == "GET":
+        db = current_app.config["db"]
+        movie = db.get_movie_new(imdb_title_id)
+        values = {"review": ""}
+        return render_template("review.html", movie=movie, values=values)
+    else:
+        valid = validate_review_form(request.form)
+        if not valid:
+            return render_template("review.html", values = request.form)
+        
+        review = request.form.data["review_content"]
+        db.insert_review(current_user.username, review, imdb_title_id)
+        #db.update_bio(current_user.username, bio)
+        return redirect(url_for("movie_new", imdb_id = imdb_title_id))
+
 
 
 def movie_new(imdb_id):
     db = current_app.config["db"]
     movie = db.get_movie_new(imdb_id)
-    return render_template("movie_new.html", movie=movie, imdb_id=imdb_id)
+    reviews = db.get_reviews(imdb_id)
+    return render_template("movie_new.html", movie=movie, imdb_id=imdb_id, reviews=reviews)
 
 def delete_movie_page(imdb_title_id):
     db = current_app.config["db"]
@@ -273,9 +284,6 @@ def casting_page(imdb_id):
 def delete_from_casting_page(imdb_title_id, imdb_name_id, ordering):
     if not current_user.is_admin:
         abort(401)
-    print(imdb_name_id)
-    print(imdb_title_id)
-    print(ordering)
     db = current_app.config["db"]
     db.delete_from_casting(imdb_title_id, imdb_name_id, ordering)
     return redirect(url_for("casting_page", imdb_id = imdb_title_id))
@@ -306,12 +314,24 @@ def validate_bio_form(form):
     form.errors = {}
 
     form_bio = form.get("bio")
-    print(len(form_bio))
 
     if len(form_bio) > 240:
         form.errors["bio"] = "Bio can not be longer than 240 characters."
     else:
         form.data["bio"] = form_bio
+
+    return len(form.errors) == 0
+
+def validate_review_form(form):
+    form.data = {}
+    form.errors = {}
+
+    form_review = form.get("review_content")
+
+    if len(form_review) > 240:
+        form.errors["review_content"] = "Review can not be longer than 240 characters."
+    else:
+        form.data["review_content"] = form_review
 
     return len(form.errors) == 0
 
@@ -521,25 +541,17 @@ def movies_new_page():
     if request.method == "GET":
         return render_template("movies_search.html")
     else:
-        print("\nRead Form:")
         title = request.form["title"]
-        print(title)
         score = request.form["score"]
-        print(score)
         lang = request.form["answer"]
-        print(lang)
         genres = request.form.getlist("genres")
-        print(genres)
 
         movies = db.search_movie(title, score, lang, genres)
 
         return render_template("search.html", movies=movies) 
-        #return redirect(url_for("search_movies_page",movies=movies))
 
 
 def search_movies_page(movies):
-    #print("----")
-    #print(len(movies))
     return render_template("search.html", movies=movies) 
 
 
@@ -548,31 +560,16 @@ def search_movies_page(movies):
 def upload_page():
     db = current_app.config["db"]
     if request.method == "GET":
-        #print("hey")
-
-        #db = current_app.config["db"]
-        #db.write_blob(1, "ok.jpg", "jpg")
-        #db.read_blob(1, "uploads/")
-        #db.write_pp("admin", "/uploads/empty.png")
-        #db.read_pp("admin", "uploads/")
-        #print("done")
         return render_template("file_upload.html")
     else:
         uploaded_file = request.files['file']
         extensions = ['.jpg', '.png', '.gif']
-        #max_length = 1024*1024
         path = 'uploads' 
-        """current_directory = os.getcwd()
-        print(current_directory)
-        db = Database(os.path.join(current_directory, "database.sqlite"))
-        app.config["db"] = db"""
         if uploaded_file.filename != '':
             filename = uploaded_file.filename
-            #print(uploaded_file.size)
             file_ext = os.path.splitext(filename)[1]
             if file_ext not in extensions:
                 abort(400)
-            print(uploaded_file.filename)
             uploaded_file.save(os.path.join(path, uploaded_file.filename))
             username = current_user.username
             db.write_pp(str(username), os.path.join(path, uploaded_file.filename), file_ext)
